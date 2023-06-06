@@ -9,26 +9,22 @@
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
               <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav align-content-end">
+                <ul class="navbar-nav">
                   <li class="nav-item">
-                    <a class="nav-link text-danger" href="advanced.html">Google Advanced</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link text-success" href="image.html">Google Image</a>
+                    <a class="nav-link text-danger" href="index.html">Google</a>
                   </li>
                 </ul>
               </div>
             </div>
           </nav>
-        <!-- Index page of google search replication. Content uses bootstrap 5 for CSS config-->
-        <div class="form-control">
-            <form class="input-group" action="https://www.google.com/search">
-                <div class="input-group p-4 input-group-sm mb-3 justify-content-center rounded-4">
-                    <input class="form-control input-group" type="text" name="q">
+          <!--Google Images search replicaiton. Takes user input and directs user directly to image search results.-->
+          <div class="form-control">
+            <form class="input-group" action="https://www.google.com/images">
+                <div class="input-group p-2 d-flex input-group-sm justify-content-center">
+                    <input class="form-control input-group mb-2" type="text" name="q">
                 </div>
                 <div class="input-group p-2 d-flex justify-content-center">
                     <input class="btn btn-outline-primary text-success mb-3" type="submit" value="Google Search">
-                    <button type="submit" name="btnI" value="1" class="btn btn-outline-primary text-success mb-3">I'm Feeling Lucky</button>
                 </div>
             </form>
         </div>
