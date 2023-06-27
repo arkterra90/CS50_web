@@ -1,0 +1,66 @@
+Week 3 Django:
+Lecture 3 Django:
+- Web applications built with Django can be dynamic.
+    - html and css are static pages
+    - Software running on a web server that responds back with html
+    - HTTP hyper text t— protocol
+    - Statu score 200 OK
+        - 301 Moved Permanently
+        - 403 Forbidden
+        - 404 Not Found
+        - 500 Internal Server Error
+    - Installing Django
+        - pip3 install Django
+        - django-admin start project PROJECT_NAME
+    - Important Files:
+        - manage.py
+            - helps us execute commands in the project
+        - settings.py
+            - important config you can change 
+        - urls.py
+            - a table of contents for our web application
+    - starting server
+        - python3 manage.py rumserver
+    - one django project can have multiple applications
+        - think of all the google services under one heading but doing many things
+    - creating a django app
+        - python3 mannage.py startapp APP_NAME
+        - go to settings in django project
+            - go down to INSTALLED_APPS and add your new app
+        - creating views in app
+            - def a function in views of the individual app
+            - create urls.py in the app directory
+                - see input from lecture3
+                - giving a name can be helpful later when calling views
+                - from . import views
+                    - this gives you  access to files in the current directory of the urls.py file
+            - go back to urls.py in who django app
+                - add custom route to new hello app
+                - include include in django.urls import
+    - HTML sending with Django
+        - instead of returning HttpResponse
+        - return render(request, “hello/index.html”)
+    - Django templating language
+    - Django has a different system for dealing with static files such as CSS
+        - to add static files create a static folder
+    - template inheritance
+        - inherit from a layout
+        - extends “tasks/layout.html”
+    - url linking within django
+        - lets django figure out where th link is. Uses the name.
+        -  <a href="{% url 'add' %}">Add a New task</a>
+        - add an app_name to urls page of each app to send links to the correct app within django
+    - Form submission
+        - cross site request forgery token to avoid vulnerability 
+        - implemented with django middleware
+            - when submitting data via post we need a token to the form so it can be authenticated.
+    - creating forms in django
+        - from django import forms
+        - you can create a form within a python class
+            - task = forms.CharField(label=“New Task”)
+        - then add {{ form }} within html for where you would like the form to appear
+        - automatically does client side validation
+        - we also want to do server side validation
+    - django  sessions
+        - A way to remember who a user is a store data individually
+        - python3 manage.py migrate

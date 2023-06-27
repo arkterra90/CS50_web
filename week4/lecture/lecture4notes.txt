@@ -1,0 +1,7 @@
+Lecture:
+SQL, Models, and Migrations
+
+Django allows us to have an abstraction layer to interact with SQL.
+Data:
+    storing data in a relational database allows us to interact with data in our application.
+

@@ -1,0 +1,449 @@
+Week 0 HTML CSS:
+- Lecture:
+    - HTML Hyper Text Markup Language
+        - <!DOCTYPE HTML>
+            - It’s a doctype declaration that tells the web browser what version of HTML we are using.
+            - This one is html5
+        - HTML tags use the angled brackets
+            - <html lang=“en”>
+            - </html>
+            - opening and closing tags
+            - Items inside of tags are called attributes 
+            - <title></title> goes inside the head
+            - <body></body>
+                - content of the html. Visible part of the page the user can see.
+        - Document Object Model or DOM
+            - A tree like structure that describes how each element interacts with each other.
+            - made of parent and child elements.
+            - Helps us understand how to modify page content.
+        - HTML headings
+            - <h1></h1>
+            - h1 through h6
+        - HTML list
+            - two types of list
+            - ordered list
+                - <ol>title of list here</ol>
+                - needs a new element inside of the ordered list of <li>
+                    - <li> first item </li>
+                    - <li> second item </li>
+            - unordered list
+                - <ul>title of list here</ul>
+                - use li tag for items in list
+                - <li></li>
+        - HTML media
+            - images
+                - <img src=“path to image” alt=“text description of image” width=“300”>
+                - has no closing tag
+                - additional html attributes to modify the size of the image
+                    - add width to image to adjust image size
+        - HTML links
+            - <a href=“https://google.com”>Text to display for link</a>
+                - a stands for anchor
+            - Used to link to different websites but also pages inside of our website
+        - HTML tables
+            - <table>entirety of table inside the table</table>
+            - <thead>for the head</thead>
+                - <th>table headings</th>
+            - <tbody>main part of the table</tbody>
+                - <tr>for a row of the table</tr>
+                    - put in another row for more data
+                    - <td>table data</td>
+        - HTML form
+            - a way for a user to provide information to the webpage
+            - <form>
+                - <input type=“text” placeholder=“default text to display” name=“full_name”>
+                - <input type=“submit”>
+            - </form>
+            - type can also be password to not display user input
+            - datalist allows user to choose from a drop down like a list of states of countries
+                - when you type in letters it filters down
+        - CSS cascading style sheets 
+            - latest version is CSS3
+            - allows us to specify design properties of the page
+            - any element can get a style=“” attribute to give elements individual properties
+                - style=“color: blue;”
+                    - this would give your text a blue color
+                - multiple elements can be added to style attribute
+                - text-align: center;
+            - elements can get styling from parent elements
+                - every child inside of the parent element is then given the same styling
+                - inline styling is when we put the style attribute inside of each element
+            - style information can be put in the head section
+                - allows us to only write the style code once
+                - limited to only the page your on
+                - <style>
+                    - h1 {
+                        - color: blue;
+                        - text-align: center;
+                        - }
+                - </style>
+            - if multiple web pages you might want to style in similar ways
+                - move to a different file
+                    - styles.css
+                - in the html page in the head link the styles.css to page
+                    - <link rel=“stylesheet” href=“styles.css”>
+                - no repeating ourselves
+                - all pages update when changes are made to styles.css
+        - CSS properties we can add
+            - <div> tags
+                - A section of the page to break up the page into sections
+                - <style>
+                    - div {
+                        - background_color: blue;
+                        - width: 100px;
+                        - height: 400px;
+                        - }
+            - padding
+                - inside of the div add padding to give padding to the outside of the div
+                - inside of the element
+                - padding: 20px;
+            - margin
+                - outside of the border of an element
+                - margin: 20px;
+            - font
+                - font-family: Arial;
+                - not all computers support different fonts by adding more fonts with commas after desired fonts
+                - font-size: 28px;
+                - font-weight: bold;
+            - border
+                - border: 3px solid black;
+                - could be solid, dashed, or dotted
+                - border-collapse: collapse; gives you a table that looks more like a spreadsheet
+            - consolidating css selectors (ways of choosing elements)
+                - table, th, td {
+                    - Combines all these elements and they all get the same styling
+            - How to style an element uniquely
+                - we need a way to uniquely reference an html element
+                - id
+                    - id=“id_name”
+                    - in your style of css file styling can be done by id
+                        - use #id_name to only style an element by id
+                - class
+                    - giving a name to a none unique html element to reused across different type of html elements
+                    - use . to signify class in style or css
+                        - .class_name {
+                            - give attributes
+                            - }
+            - What happens when something has multiple references in style or css?
+                - CSS problems of specificity
+                    - precedence is: inline, id, class, type
+                    - When css code conflicts it follows the specificity order always.
+            - CSS selectors
+                - gives you ways of distributing style
+                - descendant selector
+                    - in the style of css file
+                    - ul > li {
+                        - color: blue;
+                        - }
+                    - the first html tag signifies the parent and the second is the recipient of the css
+                - attribute selector
+                    - a[href=“https://facebook.com”] {
+                        - color: red;
+                        - }
+                    - this styles only the element that has the attribute specified
+                    - use square bracket notation
+                - psuedoclass
+                    - button:hover {
+                        - background-color: orange;
+                        - }
+            - Responsive Design
+                - allows us to design so it looks good on different types of devices
+                - ways to implement
+                    - viewport
+                        - the visual part of the screen the user can actually see
+                        - add this in the head section of the page
+                            - <meta name=“viewport” content=“width-device-width, initial-scale=1.0”>
+                    - media queries
+                        - controls how a page looks depending on browser
+                        - @media (min-width: 600px) {
+                            - body {
+                                - background-color: red;
+                                - }
+                            - }
+                        - @media (max-width: 599) {
+                            - body {
+                                - background-color: blue;
+                                - }
+                            - }
+                        - fine tunes control of how it looks on different types of devices
+                        - can control any css property 
+                        - there are many types of media queries to control page look
+                    - flexbox
+                        - helpful for multiple elements on the same page at the same time
+                        - we can wrap elements if not enough space for horizontal viewing
+                        - display: flex;
+                        - flex-wrap: wrap;
+                        - with div inside of div use descendant selector to style
+                        - grid
+                            - display: grid;
+                            - padding: 20px;
+                            - grid-column-gap: 20px;
+                            - grid-row-gap: 10px;
+                            - grid-template-columns: 200px 200px auto;
+            - CSS libraries
+                - Bootstrap
+                    - add bootstrap css code to head of file
+                    - bootstrap divides the page into 12 columns col-3 signifies using 3 of the 12 columns 
+                    - size of the screen dependent
+                        - col-lg-3 signifies large screen
+                        - col-sm-6 signifies small screen
+                        - by using more columns you can go from displaying 4 columns across to 2
+            - Other types of redundancy
+                - multiple elements in different ways but with common properties
+                    - reducing redundancy can be done with SASS
+                    - create those files with .scss
+                        - we can now create variables in sass
+                        - $color: red;
+                            - variables start with $
+                            - then create your css
+                        - ul {
+                            - font-size: 14px;
+                            - color: $color;
+                            - }
+                        - ol {
+                            - font-size: 14px;
+                            - color: $color;
+                            - }
+                    - sass files have to be compiled into css
+                        - install sass on comp and compile in the terminal
+                        - in terminal
+                            - sass variables.scss:variables.css
+                        - you must recompile with every change
+                        - automating the compiling process
+                            - sass —watch variables.scss:variables.css
+                            - Sass will now watch for changes and recompile as changes are made
+                            - crtl - c to stop
+                        - sass can let us nest css selectors
+                            - compiles using descendant selector
+                        - sass gives us inheritance for css
+                            - %message {
+                                - css items
+                                - }
+                            - .success {
+                                - @extends %message;
+                                - other css
+                                - }
+                            - kind of like jinja in flask
+                        - There’s nothing sass does we can’t. It just adds speed and functionality for us and let the computer compile the work.
+Week 1 GIT:
+- Lecture:
+    - GIT
+        - A version control tool for development
+        - A CLI tool to help us keep track of changes we make to code
+            - Allows us to save snap shots of changes
+            - Allows us to sync progress with multiple people
+            - We can push our changes and pull changes that have been made
+        - We can test changes to code without changing the original
+            - We do this in a branch and then merge changes when satisfied
+        - Allows us to revert back to old versions of code.
+    - GitHub
+        - github.com/new
+            - allows us to create a new repo
+            - make it public or private
+            - click create repo button
+        - CLI commands
+            - git clone <url>
+                - url is the link to the repo you want to clone
+                - you can use https or ssh
+            - code .
+                - allows you to open all files in a folder
+            - commits are save points
+                - git add
+                    - tells git to add file to what we want to track
+                    - git add <filename>
+            - git commit
+                - save a snapshot of the current state of the repo
+                - git commit -m “message”
+            - git status
+                - tells what is currently happening within a repo
+            - git push
+                - sends changes to GitHub to repo
+            - git commit -am “message”
+                - git commit and add all files that have been changed
+            - git pull
+                - download the latest version of a repo to my local machine
+        - Merge Conflicts
+            - When changes have been made to the same area of code and we have conflicts
+            - things between arrows and equal signs are your changes
+            - things between equal signs to arrows are conflicting changes
+            - sequence of numbers and letters is the hash identity of conflicting events.
+            - addressing
+                - remove markers
+                - decided the changes you want to delete and what you want to keep.
+                - The human programer has to look at the file to resolve the conflict.
+            - git operates with adding and removing lines and doesn’t distinguish multiple things on the same lines
+        - Other git commands
+            - git log
+                - keeps track of all changes made to repo
+                - gives you change in CLI
+            - git reset
+                - allows you to go back to a previous state of a repo.
+                - git reset —hard <commit hash>
+                - git reset —hard origin/master
+        - Making changes
+            - How to work on many things simultaneously
+            - Branching
+                - Master branch is the default branch
+                - Feature branches 
+                - Where you are working is called the HEAD
+                - Merge branches back together that has all the latest code
+            - git branch
+                - tells you what branch you’re on and what branches are in the repo
+            - git checkout -b name
+                - starts a new branch and you give your branch a name
+                - send git branch again and you’ll see the updates and new branches
+            - git checkout name
+                - switches to the branch you want to work on. Name is the branch you want to go to.
+            - git merge name
+                - merges a branch into another
+                - name is the branch you want to merge to the branch you are currently in.
+        - Forking repos
+            - Allows you to make you’re own copy of a repo
+            - To send back you can open a pull request to ask to merge changes to original code
+        - GitHub pages
+            - allows you to quickly deploy a static webpage
+
+Lecture 2: Python
+- Lecture 2:
+    - Functions take arguments inside of parentheses 
+    - Python is an interpreted language. Meaning it doesn’t have to be compiled before use.
+    - Variable types don’t have to be declared as a requirement
+    - bool values are have capitol first letters True or False
+    - None is a type that represents a lack of a value
+    - Prompting for input
+        - name = input(“Name: “)
+        - print(“Hello, “ + name)
+            - + concatenates the values to be printed.
+    - f string
+        - print(f”Hello, {name}”)
+            - you can use curly braces to insert a value into the string without the + to concatenate
+            - place f inside braces
+    - Conditions
+        - if, elif, else
+        - we know we are in a condition by indentation.
+        - else if is abbreviated to elif
+    - Sequences of data storing
+        - string
+            - name = “Harry”
+            - print(name[0])
+                - it would print the index of the 0 position of the string
+        - List
+            - names = [“Harry”, “Ron”]
+            - print(names[0])
+                - would print the first name
+            - names.append(“Draco”)
+                - would add in a name to the list
+            - names.sort()
+                - auto sorts the list
+        - tuple
+            - a couple of values that are stored together and don’t change
+            - instead of creating multiple variables we can store  tuple
+            - coordinate = (10.0, 20,0)
+                - uses parentheses instead of square or curly brackets
+        - set
+            - collection of unique values
+            - s = set()
+            - s.add(1)
+            - s.add(2)
+            - s.add(3)
+            - no element can appear twice in a set
+            - s.remove(2)
+                - would remove 2 from the set.
+            - print(f”the set has {len(s)} of elements.”)
+                - would print the number of elements in the set
+        - dict
+            - collection of key value pairs
+            - maps a thing to its definition 
+            - houses = {“Harry”:  “Gryffindor”, “Draco”: “Slytherin”}
+                - key values joined by : pairs separated by commas
+                - print(houses[“Harry”])
+                    - square brackets are how you lookup something in a python dict
+                    - would print Gryffindor
+            - houses[“Herminoe”] = “Gryffindor”
+                - would add key and value to houses dict.
+    - Looping
+        - for I in range(6):
+            - print(I)
+                - would print 6 numbers in order
+    - Functions
+        - Takes an input and returns a value
+        - def square(x)
+            - def declares functions, name, parenthesis denotes inputs
+            - return x * x
+        - for I in range(10):
+            - print(f”The square of {I} is {square(I)}”)
+            - would print square of 0 through 9
+        - writing functions from other files or modules
+            - import the function to the file it’s used
+            - be default python files don’t know about each other
+            - use this
+                - from functions import square
+                - if you import the entire notation you must use the dot notation to go inside the library to use the function you want.
+    - Object Orientated programming
+        - A way of thinking about the way we look at programming
+        - objects store data and support the ability to perform an action
+            - such as a flight (object) and then adding passengers 
+        - to create a new type of data we could create a new class of objects to represent the data structure
+        - class
+            - a template for a type of object
+            - class Point():
+                - def __init__(self, x, y):
+                    - “a magic method or function that is automatically called every time we create a new point”
+                    - self.x = x
+                    - self.y = y
+            - p = Point(2, 8)
+            - print(p.x)
+            - print(p.y)
+        - airline class
+            - class Flight():
+                - def __init__(self, capacity):
+                    - self.capacity = capacity
+                    - self.passengers = []
+                - def add_passenger(self, name):
+                    - if not self.open_seats():
+                        - return False
+                    - self.passengers.append(name)
+                    - return True
+                - def open_seats(self):
+                    - return self.capacity - len(self.passengers)
+            - flight = Flight(3)
+            - people = [“harry”, “ron”, “herimone”, “ginny”]
+            - for person in people:
+                - success = flight.add_passenger(person)
+                - if success:
+                    - print(f”Added {person} to flight successfully.”)
+                - else:
+                    - print(f”No available seats for {person}”)
+    - Decorators
+        - A function that takes a function as input and returns a modified function as input.
+            - A functional programming paradigme
+        - def announce(f):
+            - def wrapper():
+                - print(“about to run the function…”)
+                - f()
+                - print(“done with the function”)
+            - return wrapper
+        - @announce
+        - def hello():
+            - print(“hello, world”)
+        - hello()
+        - The power of decorators is the take a function and add capability to it.
+            - EX: a function to make sure a user is logged in to only allow user to use website if logged in
+    - lambda
+        - A way of expressing a function as a single value
+        - people.sort(key= lambda person: person[“name”])
+    - How to handle exceptions
+        - A way to handle the error nicely instead of having the program crash.
+        - import sys
+        - try:
+            - x = int(input(“x: “))
+            - y = int(input(“y: “))
+        - except ValueError:
+            - print(“error: invalid input.”)
+            - sys.exit(1)
+        - try:
+            - result = x / y
+        - except ZeroDivisionError:
+            - print(“error: Cannot divide by 0”)
+            - sys.exit(1)
+        - print(f” {x} / {y} = {result}”)
