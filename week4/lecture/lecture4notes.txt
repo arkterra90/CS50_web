@@ -3,5 +3,24 @@ SQL, Models, and Migrations
 
 Django allows us to have an abstraction layer to interact with SQL.
 Data:
-    storing data in a relational database allows us to interact with data in our application.
-
+    Storing data in a relational database allows us to interact with data in our application.
+    SQL allows us to have a database languege to manage relational databases.
+    MySQL & PostgeSQL are for big data management
+    SQLite is more for servers and liter weight implementation that MySQL, stores all data in a single file.
+        Many of the same syntax for SQLite applies to other SQL 
+    SQL
+        Has Data types like all programing languages.
+            SQLite - Text, numeric, integer(ints & NUMBERS WITH DECIMAL POINTS), real(), 
+                BLOB(binary large object, audio files and images.)
+            MySQL - has a longer list of storeable data types that can add some efficiencys
+                CHARSET, VARCHAR, SMALLINT, INT, BIGINT, FLOAT, DOUBLE
+    Creating a table:
+        CREATE TABLE flights (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            origin TEXT NOT NULL,
+            destination TEXT NOT NULL,
+            duration INTEGER NOT NULL
+        );
+        each lower case item is a column title,
+        the upper case is the type of data being stored.
+        NOT NULL is an example of an additional constraint on the data.
