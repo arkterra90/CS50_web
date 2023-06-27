@@ -6,16 +6,16 @@ from . import util
 # converts html to markdown
 def convert_md_to_html(title):
     content = util.get_entry(title)
-    markdowner = Markdown()
+    mark_con = Markdown()
     if content == None:
         return None
     else:
-        return markdowner.convert(content)
+        return mark_con.convert(content)
 
 # renders homepage for user
 def index(request):
     return render(request, "encyclopedia/index.html", {
-        "entries": util.list_entries()
+        "wiki_ents": util.list_entries()
     })
 
 # renders an entry page upon user request. First checks to see
