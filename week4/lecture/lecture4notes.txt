@@ -24,3 +24,18 @@ Data:
         each lower case item is a column title,
         the upper case is the type of data being stored.
         NOT NULL is an example of an additional constraint on the data.
+            other constraints: CHECK, DEFAULT, PRIMARY KEY, UNIQUE
+            allows you to ensure valid data is added to the table.
+    INSERT into a SQL table
+        INSERT INTO flights
+            (origin, destination, duration)
+            VALUES ("New York", "London", 415);
+        Allows us to add new rows into our table
+    SELECT and view data from a table
+        SELECT * FROM flights;
+            This would show us all data in flights.
+             * is a wild card.
+        SELECT origin, destination, FROM flights;
+            This would only return the origin and destination column of the table
+        SELECT * FROM flights WHERE id = 3;
+            This would only return a row with the id of 3.
