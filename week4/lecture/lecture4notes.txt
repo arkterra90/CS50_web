@@ -39,3 +39,47 @@ Data:
             This would only return the origin and destination column of the table
         SELECT * FROM flights WHERE id = 3;
             This would only return a row with the id of 3.
+        SELECT * FROM flights WHERE origin LIKE "%a%";
+            returns all results with an a in the origin column
+        Addtional functions of queries
+            AVERAGE, COUNT, MAC, MIN, SUM
+    UPDATE command
+        UPDATE flights SET duration = 430 WHERE origin = "New York" AND destination = "London";
+            updates duration WHERE next conditions are true.
+    DELETE command 
+        DELETE FROM flights WHERE destination = "Tokyo";
+            deletes where the condition is true
+    Other Clauses
+        LIMIT, ORDER BY, GROUP BY, HAVING
+    Foreign Keys
+        When we have repitition we want to seperate out data and "normalize" it.
+        We might have a seperate table for this data to keep repitition down
+        An association table joins values from two tables to express relationships
+    Join queries
+        SELECT first, origine, destination FROM flights JOIN passengers ON passengers.flight_id = flights.id;
+        JOIN/ INNER JOIN, LEFT OUTER JOIN, RIGHT OUTER JOIN, FULL OUTER JOIN
+    TALBE OPTIMIZATIONS
+        CREATE INDEX name_index ON passengers (last);
+        allows us to more efficiently search a table
+    SQL injection
+        Using strategys to keep people from hacking our queries
+    Race conditions
+        Any time you have multipul things happening at the same time
+        Could result in conflicts and unexpected results
+        We could place a lock on the database any time a transaction is being done.
+    sqlite3 Modes 
+        .mode columns
+        .headers yes
+            These give formating to the output of sqlite3
+Django Models
+    Every table has to be a class inside of the apps models.py file
+    In order to update the table to let it know there is a database a migration must happen 
+    Two step process
+        Instruction and then application
+        python3 manage.py makemigrations
+        python3 manage.py migrate
+    We can interact with data inside of the django shell
+        python3 manage.py shell
+        Inserting data in the shell 
+            f = Flight(origin="New York", destination="London", duration=415)
+            f.save()
