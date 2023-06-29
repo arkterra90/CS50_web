@@ -81,5 +81,17 @@ Django Models
     We can interact with data inside of the django shell
         python3 manage.py shell
         Inserting data in the shell 
+            Import your new model into the shell with:
+                from flights.model import Flight
+                from flights.models import *
             f = Flight(origin="New York", destination="London", duration=415)
             f.save()
+        Query for the flight
+            Flight.objects.all()
+            flight = flights.first()
+        Going into the models.py file we can use __str__ function to return a string of the file
+        Delete with flight.delete()
+        Airports.objects.filter(city="New York")
+    Foreign Keys and multi tables in Django 
+        models.ForeignKey(Airtport, on_delete=models.CASCADE)
+            This ties one table to another and when deleted in one table will also delete in another.
