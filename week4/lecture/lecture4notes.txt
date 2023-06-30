@@ -95,3 +95,6 @@ Django Models
     Foreign Keys and multi tables in Django 
         models.ForeignKey(Airtport, on_delete=models.CASCADE)
             This ties one table to another and when deleted in one table will also delete in another.
+    Django admin    
+        python3 manage.py createsuperuser
+        
