@@ -20,20 +20,19 @@ class Listing(models.Model):
         ("Toys", "Toys")
     ]
 
-    title = models.CharField(max_length=64)
-    discription = models.TextField()
-    condition = models.CharField(max_length=5, choices=conditions, default="")
+    title = models.CharField(verbose_name='Listing Title', max_length=64)
+    discription = models.TextField(verbose_name='Listing Discription')
     category = models.CharField(max_length=9, choices=categories, default="")
-    list_user = models.IntegerField()
+    bid_start = models.DecimalField(verbose_name='Starting Bid', max_digits=10, decimal_places=2, default='0.00')
+    list_user = models.CharField(verbose_name='Listing User', max_length=64, null=True, blank=True)
     list_time = models.DateTimeField(auto_now_add=True)
-    list_pic = models.ImageField(upload_to='images/')
-
+    image_url = models.URLField(null=True, blank=True)
     def __str__(self):
-        return f"{self.id}: {self.title} {self.discription} {self.condition} {self.category} {self.list_user}"
+        return f"{self.id}: {self.title} {self.discription} {self.category} {self.list_user} {self.image_url}"
 
 class bids(models.Model):
     item = models.ForeignKey(Listing, on_delete=models.CASCADE)
-    bid = models.IntegerField()
+    bid = models.DecimalField(max_digits=10, decimal_places=2)
     bid_time = models.DateTimeField(auto_now_add=True)
     bid_user = models.IntegerField()
 

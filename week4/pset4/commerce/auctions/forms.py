@@ -6,6 +6,11 @@ class ListingForm(ModelForm):
     class Meta:
         model = Listing
         fields = "__all__"
+        exclude = ["list_user"]
+        labels = {
+            'title': 'Title'
+        }
+
 
 
 class bidsForm(ModelForm):

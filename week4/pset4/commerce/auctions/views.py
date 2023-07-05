@@ -3,8 +3,9 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
-from .models import User
+from .models import *
 from .forms import *
 
 
@@ -62,10 +63,33 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "auctions/register.html")
-    
+
+@login_required(redirect_field_name='index')    
 def list_add(request):
     if request.method == "POST":
-        pass
+        if 'save' in request.POST:
+            f = ListingForm(request.POST)
+            if f.is_valid():
+                instance = f.save(commit=False)
+                instance.list_user = request.POST.get('list_user')
+                instance.save()
+                
+                return render(request, "auctions/index.html")
+            else:
+                return render(request, "auctions/list_add.html", {
+                    "message": "Listing was not saved",
+                    "ListingForm": ListingForm
+                })
+        if 'add' in request.POST:
+            f = ListingForm(request.POST)
+            if f.is_valid():
+                f.save()
+                return render(request, "auctions/list_add.html")
+            else:
+                return render(request, "auctions/list_add.html", {
+                    "message": "Listing was not saved",
+                    "ListingForm": ListingForm
+                })
     else:
         return render(request, "auctions/list_add.html", {
             "ListingForm": ListingForm
