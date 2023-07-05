@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from .models import User
+from .forms import *
 
 
 def index(request):
@@ -61,3 +62,11 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "auctions/register.html")
+    
+def list_add(request):
+    if request.method == "POST":
+        pass
+    else:
+        return render(request, "auctions/list_add.html", {
+            "ListingForm": ListingForm
+        })
