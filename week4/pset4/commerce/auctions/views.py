@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 
 from .models import *
 from .forms import *
@@ -105,11 +106,32 @@ def list_add(request):
 @login_required(redirect_field_name='index')    
 def list_view(request, list_id):
     list_item = Listing.objects.get(pk=list_id)
-    print(list_item)
+    
+    # For a brand new item there will not be comments or bids so a
+    # try/except is needed to handle for errors with the query.
+    try:
+        list_bid = bids.objects.get(pk=list_id)
+    except (NameError, ObjectDoesNotExist):
+        list_bid = None
+    
+    try:
+        list_comment = comments.objects.get(pk=list_id)
+    except (NameError, ObjectDoesNotExist):
+        list_comment = None
+
     return render(request, "auctions/list_view.html",{
         "list_item": list_item,
         "BidForm": bidsForm,
-        "CommentsForm": CommentsForm 
-        # "list_bid": list_bid,
-        # "list_comment": list_comment
+        "CommentsForm": CommentsForm, 
+        "list_bid": list_bid,
+        "list_comment": list_comment
     })
+
+def item_comments(request):
+    f = CommentsForm(request.POST)
+    if f.is_valid:
+        instance = f.save(commit=False)
+        instance.user_comment = request.POST.get('bid_user')
+        instance.item = request.POST.get('list_item')
+        instance.save()
+        return render(request, "auctions/list_view.html")

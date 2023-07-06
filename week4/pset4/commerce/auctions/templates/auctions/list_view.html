@@ -2,21 +2,23 @@
 
 {% block body %} 
 
-
+    <!-- Displays to user information about listing-->
     <div class="container border border-dark p-4 mb-4">
         <div class="row">
         <div class="col-md-6">
             <h3 class="mb-3">{{ list_item.title }}</h3>
             <p class="mb-3">{{ list_item.discription }}</p>
             <p class="mb-3">Current Bid: ${{ list_item.bid_start }}</p>
-            <p class="mb-0">Posted by: {{ list_item.list_user }}</p>
+            <p class="mb-3">Posted by: {{ list_item.list_user }}</p>
+            <p class="mb-0">List is currently: {{list_item.list_active }}</p>
         </div>
         <div class="col-md-6">
             <img src="{{ list_item.image_url }}" alt="Listing Image" class="img-fluid">
         </div>
         </div>
     </div>
-
+    <!-- Allows user to place a bid. Form sends back hidden inputs to 
+    allow for management of fields not shown.-->
     <div class="container border border-dark p-4 mb-4">
         <div class="row">
         <div class="col-md-6">
@@ -33,20 +35,25 @@
         </div>
         </div>
     </div>
-
+    <!-- Allows user to make comments on a listing. Also displays comments made 
+    on a listing. -->
     <div class="container border border-dark p-4 mb-4">
         <div class="row">
         <div class="col-md-6">
             <h3 class="mb-3">Comments:</h3>
-            <form action="{ url 'item_comment' list_id %}" method="post">
+            <form action="{% url 'item_comments' %}" method="post">
                 {% csrf_token %}
                 {{ CommentsForm }}
                 <input type="hidden" name="bid_user" value="{{ user.username }}">
-                <input type="hidden" name="list_item" value="{{ list_item.id }}">
-                <button type="submit" name="make_bid">Save Comment</button>
+                <input type="hidden" name="list_item" value="{{ list_item.title }}">
+                <button type="submit" name="comment">Save Comment</button>
             </form>
         </div>
-        <div class="col-md-6">            
+        <div class="col-md-6">
+            <h2 class="mb-3">{{list_item.title }} Comments:</h2>
+                  {% for comment in list_comment %} 
+                  <p>{{ comment.user_comment }}: {{ comment.item_comment }} </p>
+                  {% endfor %}
         </div>
         </div>
     </div>
