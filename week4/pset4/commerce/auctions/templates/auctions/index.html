@@ -5,10 +5,10 @@
 
     {% for list in listing %} 
 
-    <div class="container border border-dark p-4">
+    <div class="container border border-dark p-4 mb-4">
         <div class="row">
           <div class="col-md-6">
-            <h3 class="mb-3">{{ list.title }}</h3>
+            <h3 class="mb-3"><a href="{% url 'list_view' list.id %}">{{ list.title }}</a></h3>
             <p class="mb-3">{{ list.discription }}</p>
             <p class="mb-3">Current Bid: {{ list.bid }}</p>
             <p class="mb-0">Posted by: {{ list.list_user }}</p>

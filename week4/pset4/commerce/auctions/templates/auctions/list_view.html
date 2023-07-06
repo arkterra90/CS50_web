@@ -1,0 +1,54 @@
+{% extends "auctions/layout.html" %} 
+
+{% block body %} 
+
+
+    <div class="container border border-dark p-4 mb-4">
+        <div class="row">
+        <div class="col-md-6">
+            <h3 class="mb-3">{{ list_item.title }}</h3>
+            <p class="mb-3">{{ list_item.discription }}</p>
+            <p class="mb-3">Current Bid: ${{ list_item.bid_start }}</p>
+            <p class="mb-0">Posted by: {{ list_item.list_user }}</p>
+        </div>
+        <div class="col-md-6">
+            <img src="{{ list_item.image_url }}" alt="Listing Image" class="img-fluid">
+        </div>
+        </div>
+    </div>
+
+    <div class="container border border-dark p-4 mb-4">
+        <div class="row">
+        <div class="col-md-6">
+            <h3 class="mb-3">Place Bid</h3>
+            <form action="{ url 'bid_place' list_id %}" method="post">
+                {% csrf_token %}
+                {{ BidForm }}
+                <input type="hidden" name="bid_user" value="{{ user.username }}">
+                <input type="hidden" name="list_item" value="{{ list_item.id }}">
+                <button type="submit" name="make_bid">Place Bid</button>
+            </form>
+        </div>
+        <div class="col-md-6">            
+        </div>
+        </div>
+    </div>
+
+    <div class="container border border-dark p-4 mb-4">
+        <div class="row">
+        <div class="col-md-6">
+            <h3 class="mb-3">Comments:</h3>
+            <form action="{ url 'item_comment' list_id %}" method="post">
+                {% csrf_token %}
+                {{ CommentsForm }}
+                <input type="hidden" name="bid_user" value="{{ user.username }}">
+                <input type="hidden" name="list_item" value="{{ list_item.id }}">
+                <button type="submit" name="make_bid">Save Comment</button>
+            </form>
+        </div>
+        <div class="col-md-6">            
+        </div>
+        </div>
+    </div>
+
+{% endblock %} 

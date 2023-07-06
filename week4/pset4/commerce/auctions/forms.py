@@ -6,7 +6,7 @@ class ListingForm(ModelForm):
     class Meta:
         model = Listing
         fields = "__all__"
-        exclude = ["list_user"]
+        exclude = ["list_user", "bid_current", "list_active"]
         labels = {
             'title': 'Title'
         }
@@ -16,10 +16,11 @@ class ListingForm(ModelForm):
 class bidsForm(ModelForm):
     class Meta:
         model = bids
-        fields = "__all__"
+        fields = ["bid"]
 
 
 class CommentsForm(ModelForm):
     class Meta:
         model = comments
-        fields = "__all__"
+        fields = ["item_comment"]
+        exclude = ["item", "user_comment", "time_comment"]

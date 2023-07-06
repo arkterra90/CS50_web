@@ -8,10 +8,11 @@ from django.contrib.auth.decorators import login_required
 from .models import *
 from .forms import *
 
-
+# Loads index page and sends all data from listing model to 
+# show user only active listings.
 def index(request):
     return render(request, "auctions/index.html", {
-        "listing": Listing.objects.all()
+        "listing": Listing.objects.filter(list_active=True)
     })
 
 
@@ -99,3 +100,16 @@ def list_add(request):
         return render(request, "auctions/list_add.html", {
             "ListingForm": ListingForm
         })
+    
+
+@login_required(redirect_field_name='index')    
+def list_view(request, list_id):
+    list_item = Listing.objects.get(pk=list_id)
+    print(list_item)
+    return render(request, "auctions/list_view.html",{
+        "list_item": list_item,
+        "BidForm": bidsForm,
+        "CommentsForm": CommentsForm 
+        # "list_bid": list_bid,
+        # "list_comment": list_comment
+    })
