@@ -34,7 +34,7 @@ class bids(models.Model):
     item = models.ForeignKey(Listing, on_delete=models.CASCADE)
     bid = models.DecimalField(max_digits=10, decimal_places=2)
     bid_time = models.DateTimeField(auto_now_add=True)
-    bid_user = models.IntegerField()
+    bid_user = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.id}: {self.item} {self.bid} {self.bid_time} {self.bid_user}"

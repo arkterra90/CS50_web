@@ -10,7 +10,9 @@ from .forms import *
 
 
 def index(request):
-    return render(request, "auctions/index.html")
+    return render(request, "auctions/index.html", {
+        "listing": Listing.objects.all()
+    })
 
 
 def login_view(request):
@@ -73,7 +75,6 @@ def list_add(request):
                 instance = f.save(commit=False)
                 instance.list_user = request.POST.get('list_user')
                 instance.save()
-                
                 return render(request, "auctions/index.html")
             else:
                 return render(request, "auctions/list_add.html", {
@@ -83,8 +84,12 @@ def list_add(request):
         if 'add' in request.POST:
             f = ListingForm(request.POST)
             if f.is_valid():
-                f.save()
-                return render(request, "auctions/list_add.html")
+                instance = f.save(commit=False)
+                instance.list_user = request.POST.get('list_user')
+                instance.save()
+                return render(request, "auctions/list_add.html", {
+                    "ListingForm": ListingForm
+                })
             else:
                 return render(request, "auctions/list_add.html", {
                     "message": "Listing was not saved",
