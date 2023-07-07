@@ -218,3 +218,11 @@ def watch_list (request, list_id):
             return HttpResponseRedirect(reverse("list_view", args=(listing.id,)) + f"?watch_message=Listing%20saved%20to%20watch%20list.")
         else:
             return HttpResponseRedirect(reverse("list_view", args=(listing.id,)) + f"?watch_message=Listing%20not%20saved%20to%20watch%20list.")
+
+
+def bid_close (request, list_id):
+    listing = Listing.objects.get(pk=list_id)
+    close = request.POST.get('user_bid_close')
+    listing.list_active = close
+    listing.save()
+    return HttpResponseRedirect(reverse("list_view", args=(listing.id,)))

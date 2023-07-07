@@ -23,12 +23,20 @@
             <p class="mb-3">Posted by: {{ list_item.list_user }}</p>
             <p class="mb-3">Listed on: {{ list_item.list_time }}</p>
             <p class="mb-3">List is active: {{list_item.list_active }}</p>
-            <form action="{% url "watch_list" list_id=list_item.id %}" method="post">
+            <form action="{% url "watch_list" list_id=list_item.id %}" method="post" class="mb-3">
                 {% csrf_token %} 
                 {{ WatchForm }}
                 <input type="hidden" name="user" value="{{ user.username }}">
                 <button type="submit" name="watch">Save or Remove From Watch List</button>
             </form>
+            {% if user.username == list_item.list_user %} 
+            <form action="{% url 'bid_close' list_id=list_item.id %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="user_bid_close" value="False">
+                <button type="submit" name="bid_close_save">Close Action</button>
+            </form>
+
+            {% endif %}
         </div>
         <div class="col-md-6">
             <img src="{{ list_item.image_url }}" alt="Listing Image" class="img-fluid">
