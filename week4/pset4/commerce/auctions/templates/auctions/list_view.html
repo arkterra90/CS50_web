@@ -23,7 +23,7 @@
         <div class="row">
         <div class="col-md-6">
             <h3 class="mb-3">Place Bid</h3>
-            <form action="{ url 'bid_place' list_id %}" method="post">
+            <form action="{ url 'bid_place' list_id=list_item_id %}" method="post">
                 {% csrf_token %}
                 {{ BidForm }}
                 <input type="hidden" name="bid_user" value="{{ user.username }}">
@@ -41,7 +41,7 @@
         <div class="row">
         <div class="col-md-6">
             <h3 class="mb-3">Comments:</h3>
-            <form action="{% url 'item_comments' %}" method="post">
+            <form action="{% url 'item_comments' list_id=list_item.id %}" method="post">
                 {% csrf_token %}
                 {{ CommentsForm }}
                 <input type="hidden" name="bid_user" value="{{ user.username }}">
@@ -50,7 +50,7 @@
             </form>
         </div>
         <div class="col-md-6">
-            <h2 class="mb-3">{{list_item.title }} Comments:</h2>
+            <h2 class="mb-3">{{ list_item.title }} Comments:</h2>
                   {% for comment in list_comment %} 
                   <p>{{ comment.user_comment }}: {{ comment.item_comment }} </p>
                   {% endfor %}

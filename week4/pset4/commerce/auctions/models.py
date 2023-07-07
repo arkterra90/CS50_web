@@ -49,4 +49,4 @@ class comments(models.Model):
     time_comment = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self:id}: {self.item} {self.item_comment} {self.user_comment} {self.time_comment}"
+        return f"{self.id}: {self.item} {self.item_comment} {self.user_comment} {self.time_comment}"

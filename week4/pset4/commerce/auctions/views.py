@@ -115,10 +115,11 @@ def list_view(request, list_id):
         list_bid = None
     
     try:
-        list_comment = comments.objects.get(pk=list_id)
+        list_comment = comments.objects.filter(item=list_item)
     except (NameError, ObjectDoesNotExist):
         list_comment = None
 
+    print(list_comment)
     return render(request, "auctions/list_view.html",{
         "list_item": list_item,
         "BidForm": bidsForm,
@@ -127,11 +128,12 @@ def list_view(request, list_id):
         "list_comment": list_comment
     })
 
-def item_comments(request):
+def item_comments(request, list_id):
+    listing = Listing.objects.get(pk=list_id)
     f = CommentsForm(request.POST)
     if f.is_valid:
         instance = f.save(commit=False)
         instance.user_comment = request.POST.get('bid_user')
-        instance.item = request.POST.get('list_item')
+        instance.item = listing
         instance.save()
-        return render(request, "auctions/list_view.html")
+        return HttpResponseRedirect(reverse("list_view", args=(listing.id,)))
