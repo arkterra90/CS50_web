@@ -7,11 +7,6 @@ class User(AbstractUser):
     pass
 
 class Listing(models.Model):
-
-    conditions = [
-    ("New", "New"),
-    ("Used", "Used")
-] 
     
     categories = [
         ("Home", "Home"),
@@ -50,3 +45,11 @@ class comments(models.Model):
 
     def __str__(self):
         return f"{self.id}: {self.item} {self.item_comment} {self.user_comment} {self.time_comment}"
+    
+class Watch_List(models.Model):
+    item = models.ForeignKey(Listing, on_delete=models.CASCADE)
+    watch_user = models.CharField(max_length=64)
+    watching = models.BooleanField(verbose_name='Watch List', default=False)
+
+    def __str__(self):
+        return f"{self.id}: {self.item} {self.watch_user} {self.watching}"

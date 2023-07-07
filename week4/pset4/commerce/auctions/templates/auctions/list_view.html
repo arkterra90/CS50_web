@@ -7,6 +7,12 @@
     <h5>{{ bid_message }}</h5>
      
     {% endif %}
+
+    {% if watch_message %} 
+
+    <h5>{{ watch_message }}</h5>
+
+    {% endif %}
     <!-- Displays to user information about listing-->
     <div class="container border border-dark p-4 mb-4">
         <div class="row">
@@ -15,7 +21,14 @@
             <p class="mb-3">{{ list_item.discription }}</p>
             <p class="mb-3">Current Bid: ${{ high_bid }}</p>
             <p class="mb-3">Posted by: {{ list_item.list_user }}</p>
-            <p class="mb-0">List is currently: {{list_item.list_active }}</p>
+            <p class="mb-3">Listed on: {{ list_item.list_time }}</p>
+            <p class="mb-3">List is active: {{list_item.list_active }}</p>
+            <form action="{% url "watch_list" list_id=list_item.id %}" method="post">
+                {% csrf_token %} 
+                {{ WatchForm }}
+                <input type="hidden" name="user" value="{{ user.username }}">
+                <button type="submit" name="watch">Save or Remove From Watch List</button>
+            </form>
         </div>
         <div class="col-md-6">
             <img src="{{ list_item.image_url }}" alt="Listing Image" class="img-fluid">
@@ -27,7 +40,7 @@
     <div class="container border border-dark p-4 mb-4">
         <div class="row">
         <div class="col-md-6">
-            <h3 class="mb-3">Place Bid</h3>
+            <h3 class="mb-3">Place Bid:</h3>
             <form action="{% url 'bid_place' list_id=list_item.id %}" method="post">
                 {% csrf_token %}
                 {{ BidForm }}

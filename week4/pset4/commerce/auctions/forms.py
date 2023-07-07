@@ -24,3 +24,8 @@ class CommentsForm(ModelForm):
         model = comments
         fields = ["item_comment"]
         exclude = ["item", "user_comment", "time_comment"]
+
+class WatchForm(ModelForm):
+    class Meta:
+        model = Watch_List
+        fields = ["watching"]

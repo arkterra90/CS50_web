@@ -127,6 +127,7 @@ def list_view(request, list_id):
 
     # Gets error message if a bid lower than current highest is placed
     bid_message = request.GET.get('bid_message', None)
+    watch_message = request.GET.get('watch_message', None)
 
     # Populates action item info box with current highest bid.
     # If current highest bid is the starting bid then starting bid
@@ -145,7 +146,9 @@ def list_view(request, list_id):
         "list_bid": list_bid,
         "list_comment": list_comment,
         "bid_message": bid_message,
-        "high_bid": high_bid
+        "watch_message": watch_message,
+        "high_bid": high_bid,
+        "WatchForm": WatchForm
     })
 
 def item_comments(request, list_id):
@@ -185,3 +188,33 @@ def bid_place(request, list_id):
             listing.save()
             instance.save()
             return HttpResponseRedirect(reverse("list_view", args=(listing.id,)))
+        
+# Saves a listing to Watch_List model. Checks if user is currently watching
+# the item and does not repeat saves and sends error message notifying user they
+# are already watching the item.
+def watch_list (request, list_id):
+    listing= Listing.objects.get(pk=list_id)
+    
+    user = request.POST.get('user')
+    try:
+        watch = Watch_List.objects.get(item=listing, watch_user=user)
+    except (NameError, ObjectDoesNotExist):
+        watch = None
+    if watch != None and watch.watching == True:
+        watch.watching = False
+        watch.save()
+        return HttpResponseRedirect(reverse("list_view", args=(listing.id,)) + f"?watch_message=Listing%20removed%20from%20watch%20list.")
+    elif watch != None and watch.watching == False:
+        watch.watching = True
+        watch.save()
+        return HttpResponseRedirect(reverse("list_view", args=(listing.id,)) + f"?watch_message=Listing%20saved%20to%20watch%20list.")
+    else:
+        f = WatchForm(request.POST)
+        if f.is_valid:
+            instance = f.save(commit=False)
+            instance.watch_user = user
+            instance.item = listing
+            instance.save()
+            return HttpResponseRedirect(reverse("list_view", args=(listing.id,)) + f"?watch_message=Listing%20saved%20to%20watch%20list.")
+        else:
+            return HttpResponseRedirect(reverse("list_view", args=(listing.id,)) + f"?watch_message=Listing%20not%20saved%20to%20watch%20list.")
