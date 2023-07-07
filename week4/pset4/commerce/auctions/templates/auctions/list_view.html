@@ -2,13 +2,18 @@
 
 {% block body %} 
 
+    {% if bid_message %} 
+
+    <h5>{{ bid_message }}</h5>
+     
+    {% endif %}
     <!-- Displays to user information about listing-->
     <div class="container border border-dark p-4 mb-4">
         <div class="row">
         <div class="col-md-6">
             <h3 class="mb-3">{{ list_item.title }}</h3>
             <p class="mb-3">{{ list_item.discription }}</p>
-            <p class="mb-3">Current Bid: ${{ list_item.bid_start }}</p>
+            <p class="mb-3">Current Bid: ${{ high_bid }}</p>
             <p class="mb-3">Posted by: {{ list_item.list_user }}</p>
             <p class="mb-0">List is currently: {{list_item.list_active }}</p>
         </div>
@@ -23,15 +28,18 @@
         <div class="row">
         <div class="col-md-6">
             <h3 class="mb-3">Place Bid</h3>
-            <form action="{ url 'bid_place' list_id=list_item_id %}" method="post">
+            <form action="{% url 'bid_place' list_id=list_item.id %}" method="post">
                 {% csrf_token %}
                 {{ BidForm }}
                 <input type="hidden" name="bid_user" value="{{ user.username }}">
-                <input type="hidden" name="list_item" value="{{ list_item.id }}">
                 <button type="submit" name="make_bid">Place Bid</button>
             </form>
         </div>
-        <div class="col-md-6">            
+        <div class="col-md-6"> 
+            <h2 class="mb-3">{{ list_item.title }} Bids:</h2>
+                  {% for bid in list_bid %} 
+                  <p>{{ bid.bid_user }}: ${{ bid.bid }} </p>
+                  {% endfor %}           
         </div>
         </div>
     </div>

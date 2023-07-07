@@ -76,8 +76,12 @@ def list_add(request):
             if f.is_valid():
                 instance = f.save(commit=False)
                 instance.list_user = request.POST.get('list_user')
+                instance.bid_current = instance.bid_start
+                instance.list_active = True
                 instance.save()
-                return render(request, "auctions/index.html")
+                return render(request, "auctions/index.html", {
+                    "listing": Listing.objects.filter(list_active=True)
+                     })
             else:
                 return render(request, "auctions/list_add.html", {
                     "message": "Listing was not saved",
@@ -88,6 +92,7 @@ def list_add(request):
             if f.is_valid():
                 instance = f.save(commit=False)
                 instance.list_user = request.POST.get('list_user')
+                instance.bid_current = instance.bid_start
                 instance.save()
                 return render(request, "auctions/list_add.html", {
                     "ListingForm": ListingForm
@@ -108,9 +113,10 @@ def list_view(request, list_id):
     list_item = Listing.objects.get(pk=list_id)
     
     # For a brand new item there will not be comments or bids so a
-    # try/except is needed to handle for errors with the query.
+    # try/except is needed to handle for errors with the query 
+    # where nothing would be returned.
     try:
-        list_bid = bids.objects.get(pk=list_id)
+        list_bid = bids.objects.filter(item=list_item)
     except (NameError, ObjectDoesNotExist):
         list_bid = None
     
@@ -119,13 +125,27 @@ def list_view(request, list_id):
     except (NameError, ObjectDoesNotExist):
         list_comment = None
 
-    print(list_comment)
+    # Gets error message if a bid lower than current highest is placed
+    bid_message = request.GET.get('bid_message', None)
+
+    # Populates action item info box with current highest bid.
+    # If current highest bid is the starting bid then starting bid
+    # is highest bid.
+    high_bid = bids.objects.filter(item=list_item).order_by('-bid').first()
+    if high_bid == None:
+        high_bid = list_item.bid_start
+    elif high_bid != None:
+        high_bid = high_bid.bid
+
+
     return render(request, "auctions/list_view.html",{
         "list_item": list_item,
         "BidForm": bidsForm,
         "CommentsForm": CommentsForm, 
         "list_bid": list_bid,
-        "list_comment": list_comment
+        "list_comment": list_comment,
+        "bid_message": bid_message,
+        "high_bid": high_bid
     })
 
 def item_comments(request, list_id):
@@ -137,3 +157,31 @@ def item_comments(request, list_id):
         instance.item = listing
         instance.save()
         return HttpResponseRedirect(reverse("list_view", args=(listing.id,)))
+    
+def bid_place(request, list_id):
+    listing = Listing.objects.get(pk=list_id)
+    f = bidsForm(request.POST)
+    if f.is_valid:
+        instance = f.save(commit=False)
+        #instance.bid must be greater than previous bid
+        item_bids = bids.objects.filter(item=listing)
+        highest_bid = item_bids.order_by('-bid').first()
+        if highest_bid == None:
+            if instance.bid > listing.bid_start:
+                instance.bid_user = request.POST.get('bid_user')
+                instance.item = listing
+                listing.bid_current = instance.bid
+                listing.save()
+                instance.save()
+                return HttpResponseRedirect(reverse("list_view", args=(listing.id,)))
+            else:
+                return HttpResponseRedirect(reverse("list_view", args=(listing.id,)) + f"?bid_message=Place%20a%20bid%20higher%20than%20current%20bid.")
+        elif highest_bid.bid > instance.bid:
+            return HttpResponseRedirect(reverse("list_view", args=(listing.id,)) + f"?bid_message=Place%20a%20bid%20higher%20than%20current%20bid.")
+        else:
+            instance.bid_user = request.POST.get('bid_user')
+            instance.item = listing
+            listing.bid_current = instance.bid
+            listing.save()
+            instance.save()
+            return HttpResponseRedirect(reverse("list_view", args=(listing.id,)))
