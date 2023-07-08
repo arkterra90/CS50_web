@@ -1,0 +1,22 @@
+{% extends 'auctions/layout.html' %} 
+
+{% block body %} 
+
+<div class="container border border-dark p-4 mb-4">
+    <div class="row">
+      <div>
+        <h3 class="mb-3">Choose A Category To View:</h3>
+        <form action="{% url 'category_view' %}" method="post">
+            {% csrf_token %}
+            <select id="category" name="category">
+                {% for cat in categories %} 
+                <option value="{{ cat.0 }}" name="cat_name">{{ cat.0 }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" name="cat_submit">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  {% endblock %}

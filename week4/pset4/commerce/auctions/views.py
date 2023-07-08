@@ -18,8 +18,17 @@ def index(request):
         "categories": categories
     })
 
-def catagory_view(request, cat_name):
-    pass
+def category_view(request):
+    if request.method == "POST":
+        cat_name = request.POST['cat_name']
+        print(cat_name)
+        return render(request, "auctions/categories.html", {
+            "categories": categories
+        })
+    else:
+        return render(request, "auctions/categories.html", {
+            "categories": categories
+        })
 
 
 def login_view(request):
@@ -246,7 +255,6 @@ def bid_close (request, list_id):
 
 def watch(request, user_name):
     watch_list = Watch_List.objects.filter(watch_user=user_name, watching=True)
-    print(watch_list)
     return render(request, "auctions/watch.html", {
         "user_name": user_name,
         "watch_list": watch_list
