@@ -18,12 +18,18 @@ def index(request):
         "categories": categories
     })
 
+# category_view allows a user to view the categories.html page.
+# Once a user selects a category to view on the categories page
+# category_view returns all the listings in the selected category
+# and renders them for the user. Categories are imported from .categories.
 def category_view(request):
     if request.method == "POST":
-        cat_name = request.POST['cat_name']
-        print(cat_name)
+        cat_name = request.POST['category']
+        cat_view = Listing.objects.filter(category=cat_name)
+        print(cat_view)
         return render(request, "auctions/categories.html", {
-            "categories": categories
+            "categories": categories,
+            "cat_view": cat_view
         })
     else:
         return render(request, "auctions/categories.html", {
@@ -82,6 +88,11 @@ def register(request):
     else:
         return render(request, "auctions/register.html")
 
+# list_add renders a form based on django modelforms from the Listing model
+# and allows a user to create a new user. The listing then creates a new item in
+# listing model and the user has the option to create another listing and save the 
+# one listing created. Based on user decision the user is taken back to index
+# or the page is reloaded for the user to create another listing.
 @login_required(redirect_field_name='index')    
 def list_add(request):
     if request.method == "POST":
@@ -121,7 +132,11 @@ def list_add(request):
             "ListingForm": ListingForm
         })
     
-
+# list_view allows a user to view all the details of a listing, place bids,
+# leave comments, and add the item to their watch list. If the listing was 
+# created by the user list_view also allows them to close the auction at which
+# point the templete renders input fields blank and closes the auction announcing
+# the winner.
 @login_required(redirect_field_name='index')    
 def list_view(request, list_id):
     list_item = Listing.objects.get(pk=list_id)
@@ -168,6 +183,9 @@ def list_view(request, list_id):
         "WatchForm": WatchForm
     })
 
+# item_comments takes user input for comments from list_view template, 
+# stores comments to comment's model and then HttpResponseRedirect's the user
+# back to list_view for an updated list_view containing their comment.
 def item_comments(request, list_id):
     listing = Listing.objects.get(pk=list_id)
     f = CommentsForm(request.POST)
@@ -252,7 +270,9 @@ def bid_close (request, list_id):
     listing.save()
     return HttpResponseRedirect(reverse("list_view", args=(listing.id,)))
 
-
+# watch_list renders the watch list of a user using the watch.html template. This
+# template takes no input and only renders listing the user has selected to be on 
+# their watch list.
 def watch(request, user_name):
     watch_list = Watch_List.objects.filter(watch_user=user_name, watching=True)
     return render(request, "auctions/watch.html", {

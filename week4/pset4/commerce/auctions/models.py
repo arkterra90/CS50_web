@@ -7,6 +7,7 @@ from .categories import categories
 class User(AbstractUser):
     pass
 
+# Listing model contains all details of a listing.
 class Listing(models.Model):
     
 
@@ -23,6 +24,7 @@ class Listing(models.Model):
     def __str__(self):
         return f"{self.id}: {self.title} {self.discription} {self.category} {self.list_user} {self.image_url}"
 
+# bids model keeps track of bids and is foreignkeyed to Listing.
 class bids(models.Model):
     item = models.ForeignKey(Listing, on_delete=models.CASCADE)
     bid = models.DecimalField(max_digits=10, decimal_places=2)
@@ -32,7 +34,7 @@ class bids(models.Model):
     def __str__(self):
         return f"{self.id}: {self.item} {self.bid} {self.bid_time} {self.bid_user}"
     
-
+# comments model keeps track of comments and is foreignkeyed to Listing.
 class comments(models.Model):
     item = models.ForeignKey(Listing, on_delete=models.CASCADE)
     item_comment = models.TextField(verbose_name='Comment')
@@ -42,6 +44,7 @@ class comments(models.Model):
     def __str__(self):
         return f"{self.id}: {self.item} {self.item_comment} {self.user_comment} {self.time_comment}"
     
+# Watch_List model keeps track of listing a user would like to keep on their watch list.
 class Watch_List(models.Model):
     item = models.ForeignKey(Listing, on_delete=models.CASCADE)
     watch_user = models.CharField(max_length=64)
