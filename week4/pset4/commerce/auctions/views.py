@@ -8,13 +8,18 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from .models import *
 from .forms import *
+from .categories import categories
 
 # Loads index page and sends all data from listing model to 
 # show user only active listings.
 def index(request):
     return render(request, "auctions/index.html", {
-        "listing": Listing.objects.filter(list_active=True)
+        "listing": Listing.objects.filter(list_active=True),
+        "categories": categories
     })
+
+def catagory_view(request, cat_name):
+    pass
 
 
 def login_view(request):
@@ -237,3 +242,12 @@ def bid_close (request, list_id):
     listing.list_active = close
     listing.save()
     return HttpResponseRedirect(reverse("list_view", args=(listing.id,)))
+
+
+def watch(request, user_name):
+    watch_list = Watch_List.objects.filter(watch_user=user_name, watching=True)
+    print(watch_list)
+    return render(request, "auctions/watch.html", {
+        "user_name": user_name,
+        "watch_list": watch_list
+    })

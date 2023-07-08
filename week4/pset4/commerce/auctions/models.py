@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from .categories import categories
 
 
 
@@ -8,15 +9,10 @@ class User(AbstractUser):
 
 class Listing(models.Model):
     
-    categories = [
-        ("Home", "Home"),
-        ("Tech", "Tech"),
-        ("Tools", "Tools"),
-        ("Toys", "Toys")
-    ]
 
     title = models.CharField(verbose_name='Listing Title', max_length=64)
     discription = models.TextField(verbose_name='Listing Discription')
+    # Categories are imported from categories.py 
     category = models.CharField(max_length=9, choices=categories, default="")
     bid_start = models.DecimalField(verbose_name='Starting Bid', max_digits=10, decimal_places=2, default='0.00')
     bid_current = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)

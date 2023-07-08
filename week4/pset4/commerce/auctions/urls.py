@@ -13,4 +13,6 @@ urlpatterns = [
     path('<int:list_id>/bid_place', views.bid_place, name='bid_place'),
     path('<int:list_id>/watch_form', views.watch_list, name='watch_list'),
     path('<int:list_id>/bid_close', views.bid_close, name='bid_close'),
+    path('<str:user_name>/watch', views.watch, name="watch"),
+    path('<str:cat_name>/catagory_view', views.catagory_view, name='catagory_view')
 ]
