@@ -41,7 +41,7 @@ def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
 
-
+# Registers a new user.
 def register(request):
     if request.method == "POST":
         username = request.POST["username"]
@@ -133,10 +133,12 @@ def list_view(request, list_id):
     # If current highest bid is the starting bid then starting bid
     # is highest bid.
     high_bid = bids.objects.filter(item=list_item).order_by('-bid').first()
+    high_bidder = high_bid.bid_user
     if high_bid == None:
         high_bid = list_item.bid_start
     elif high_bid != None:
         high_bid = high_bid.bid
+        print(high_bid)
 
 
     return render(request, "auctions/list_view.html",{
@@ -148,6 +150,7 @@ def list_view(request, list_id):
         "bid_message": bid_message,
         "watch_message": watch_message,
         "high_bid": high_bid,
+        "high_bidder": high_bidder,
         "WatchForm": WatchForm
     })
 
@@ -161,6 +164,11 @@ def item_comments(request, list_id):
         instance.save()
         return HttpResponseRedirect(reverse("list_view", args=(listing.id,)))
     
+# bid_place is a function of the list_view page. 
+# Allows any logged in user to place a bid. Checks to make sure
+# bid being placed is both higher than the starting bid and the
+# current highest bid. If both true, bid is saved in models and
+# user is reloaded to the auction page.    
 def bid_place(request, list_id):
     listing = Listing.objects.get(pk=list_id)
     f = bidsForm(request.POST)
@@ -189,9 +197,11 @@ def bid_place(request, list_id):
             instance.save()
             return HttpResponseRedirect(reverse("list_view", args=(listing.id,)))
         
+# watch_list is a fucntion of the list_view page.
 # Saves a listing to Watch_List model. Checks if user is currently watching
 # the item and does not repeat saves and sends error message notifying user they
-# are already watching the item.
+# are already watching the item. Send user back to the auctions page with
+# appropriate updates made to page.
 def watch_list (request, list_id):
     listing= Listing.objects.get(pk=list_id)
     
@@ -219,7 +229,8 @@ def watch_list (request, list_id):
         else:
             return HttpResponseRedirect(reverse("list_view", args=(listing.id,)) + f"?watch_message=Listing%20not%20saved%20to%20watch%20list.")
 
-
+# bid_close is a function of the list_view page.
+# Allows the creator of an auction to close bidding.
 def bid_close (request, list_id):
     listing = Listing.objects.get(pk=list_id)
     close = request.POST.get('user_bid_close')
