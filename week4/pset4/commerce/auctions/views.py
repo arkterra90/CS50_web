@@ -162,7 +162,11 @@ def list_view(request, list_id):
     # If current highest bid is the starting bid then starting bid
     # is highest bid.
     high_bid = bids.objects.filter(item=list_item).order_by('-bid').first()
-    high_bidder = high_bid.bid_user
+    try:
+        high_bidder = high_bid.bid_user
+    except (AttributeError):
+        high_bidder = None
+        
     if high_bid == None:
         high_bid = list_item.bid_start
     elif high_bid != None:
