@@ -1,0 +1,19 @@
+Week5 Javascript Notes:
+    Javascript:
+        Why is it helpful?
+            Client and server. Client sends  request to server.
+            All the code we have written runs on a server. Java enables us to write client side code in the users web browser.
+            Allows us to make webpages more interactive by manipulating the DOM.
+            HTML only describes the page based on tags and nested tags.
+        Adding Java to HTML 
+            Use <script> </script> tags to let the browser know there is a script to run.
+        Java helps with event driven programming.
+            things like a user clicks on a button and drop down list.
+            Java allows us to add event listeners.
+        Toggling something back a forth
+            We can use conditions like if else
+        If we have a variable that is not going to change label it "const"
+        Javascript console
+            normally in inspector
+        Jave can be moved to it's own file by using <script src="file path"> in the initial Java tag.
+            Allows use of code accross multiple pages.
