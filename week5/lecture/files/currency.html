@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Currency Exhchange</title>
+        <script>
+            document.addEventListener('DOMContentloaded', function() {
+
+                fetch('https://api.exchangeratesapi.io/latest?base=USD')
+                .then(responce => responce.json()) 
+                .then(data => {
+                    console.log(data);
+                });
+                
+
+            });
+        </script>
+    </head>
+    <body>
+
+    </body>
+</html>
