@@ -8,6 +8,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // By default, load the inbox
   load_mailbox('inbox');
+
+  // Send email code triggered by submit button on form
+  document.querySelector('#compose-form').addEventListener('submit', email_send) 
+
 });
 
 function compose_email() {
@@ -30,4 +34,73 @@ function load_mailbox(mailbox) {
 
   // Show the mailbox name
   document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
+
+
+  email_box(mailbox)
+  
+}
+
+function email_send(event){
+  {
+    event.preventDefault();
+
+    const recipients = document.querySelector('#compose-recipients').value;
+    const subject = document.querySelector('#compose-subject').value;
+    const body = document.querySelector('#compose-body').value;
+
+    fetch('/emails', {
+      method: 'POST',
+      body: JSON.stringify({
+        recipients: recipients,
+        subject: subject,
+        body: body
+      })
+    })
+      .then(response => response.json())
+      .then(result => {
+        console.log(result);
+        document.querySelector('#compose-view').style.display = 'none';
+        load_mailbox('sent');
+      })
+      .catch(error => {
+        console.error('Error sending email:', error);
+      });
+  };
+
+}
+
+// Calls API for inbox, sent, or archived mail for logged in user.
+function email_box(mailbox) {
+  let apiUrl = `/emails/${mailbox}`;
+  fetch(apiUrl)
+    .then(response => response.json())
+    .then(emails => {
+      if (!Array.isArray(emails)) {
+        console.error('Invalid response. Expected an array of emails:', emails);
+        return;
+      }
+      const emailsView = document.getElementById("emails-view");
+
+      function displayEmails(emails) {
+        emails.forEach((email) => {
+          const emailDiv = document.createElement("div");
+          emailDiv.className = email.read ? "read-email" : "unread-email";
+
+          const emailContent = `
+            <div style="border: 1px solid #ccc; padding: 10px; margin: 10px;">
+              <h2>From: ${email.sender}</h2>
+              <h3>Subject: ${email.subject}</h3>
+              <h3>Date Received: ${email.timestamp}</h3>
+            </div>
+          `;
+
+          emailDiv.innerHTML = emailContent;
+          emailsView.appendChild(emailDiv);
+        });
+      }
+
+      // Calls function with JSON data
+      displayEmails(emails);
+    })
+    
 }
