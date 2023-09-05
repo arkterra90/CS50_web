@@ -8,10 +8,10 @@ textarea {
     margin: 10px;
 }
 
-.read {
+.read-email {
     background-color: gray;
 }
 
-.unread {
+.unread-email {
     background-color: white;
 }
