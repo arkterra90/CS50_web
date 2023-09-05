@@ -124,6 +124,8 @@ function email_view(emailId) {
   document.querySelector('#compose-view').style.display = 'none';
   document.querySelector('#email_view').style.display = 'block';
 
+  document.querySelector('#email_view').innerHTML = '';
+  
   let apiURL = `/emails/${emailId}`;
   
   fetch(apiURL)
