@@ -18,6 +18,7 @@ function compose_email() {
   // Show compose view and hide other views
   document.querySelector('#emails-view').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'block';
+  document.querySelector('#email_view').style.display = 'none';
 
   // Clear out composition fields
   document.querySelector('#compose-recipients').value = '';
@@ -141,10 +142,12 @@ function email_view(emailId) {
           <p>${email.body}</p>
           <br>
           <button id="archiveButton">Archive</button>
+          <button id="reply">Reply</button>
         `;
         document.querySelector('#email_view').appendChild(emailDiv);
 
         const archiveButton = emailDiv.querySelector('#archiveButton');
+        const replyButton = emailDiv.querySelector('#reply');
 
         
         archiveButton.addEventListener('click', () => {
@@ -153,9 +156,12 @@ function email_view(emailId) {
           archiveEmail(emailId, emailArchStatues);
           load_mailbox('inbox');
         })
-      }
 
-      
+        replyButton.addEventListener('click', () => {
+          const replyEmail = email;
+          reply(email);
+        })
+      }
 
       displayEmail(email);
     })
@@ -183,5 +189,17 @@ function archiveEmail(emailId, emailArchStatues) {
       archived: newArchStatus
     })
   })
+}
 
+function reply(email) {
+
+  // Show compose view and hide other views
+  document.querySelector('#emails-view').style.display = 'none';
+  document.querySelector('#compose-view').style.display = 'block';
+  document.querySelector('#email_view').style.display = 'none';
+
+  // Fill composition fields for reply
+  document.querySelector('#compose-recipients').value = `${email.recipients}`;
+  document.querySelector('#compose-subject').value = `Re: ${email.subject}`;
+  document.querySelector('#compose-body').value = `\n\nOn ${email.timestamp} ${email.sender} wrote: \n${email.body}`;
 }
