@@ -10,8 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
   load_mailbox('inbox');
 
   // Send email code triggered by submit button on form
-  document.querySelector('#compose-form').addEventListener('submit', email_send) 
-
+  document.querySelector('#compose-form').addEventListener('submit', email_send); 
 });
 
 function compose_email() {
@@ -131,7 +130,6 @@ function email_view(emailId) {
   fetch(apiURL)
     .then(response => response.json())
     .then(email => {
-      console.log(email);
 
       function displayEmail(email) {
         const emailDiv = document.createElement("div");
@@ -141,17 +139,49 @@ function email_view(emailId) {
           <h4>Date Received: ${email.timestamp}</h4>
           <h4>Body:</h4>
           <p>${email.body}</p>
+          <br>
+          <button id="archiveButton">Archive</button>
         `;
         document.querySelector('#email_view').appendChild(emailDiv);
+
+        const archiveButton = emailDiv.querySelector('#archiveButton');
+
+        
+        archiveButton.addEventListener('click', () => {
+          const emailArchStatues = email.archived;
+          const emailId = email.id
+          archiveEmail(emailId, emailArchStatues);
+          load_mailbox('inbox');
+        })
       }
 
-      displayEmail(email);
+      
 
-      console.log(`Viewing email with ID: ${emailId}`);
+      displayEmail(email);
     })
     .catch(error => {
       console.error('Error fetching email:', error);
     });
+
+  fetch(apiURL, {
+    method: 'PUT',
+    body: JSON.stringify({
+      read: true
+    })
+  });
 }
 
+// Function to archive or unarchive an email
+function archiveEmail(emailId, emailArchStatues) {
 
+  newArchStatus = !emailArchStatues
+
+  let archiveAPI = `/emails/${emailId}`;
+  fetch(archiveAPI, {
+    method: 'PUT',
+    body: JSON.stringify({
+      archived: newArchStatus
+    })
+  })
+
+}
