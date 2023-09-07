@@ -41,14 +41,17 @@ function load_mailbox(mailbox) {
   
 }
 
+// function to send an email. Form information is harvested and sent via API.
 function email_send(event){
   {
     event.preventDefault();
 
+    // Form information completed by user.
     const recipients = document.querySelector('#compose-recipients').value;
     const subject = document.querySelector('#compose-subject').value;
     const body = document.querySelector('#compose-body').value;
 
+    // Post request to send form information via API.
     fetch('/emails', {
       method: 'POST',
       body: JSON.stringify({
@@ -180,6 +183,8 @@ function email_view(emailId) {
 // Function to archive or unarchive an email
 function archiveEmail(emailId, emailArchStatues) {
 
+  // When an email is set to be archived or unarchived we take the opposite value as the new
+  // value for the archival status of the email.
   newArchStatus = !emailArchStatues
 
   let archiveAPI = `/emails/${emailId}`;
