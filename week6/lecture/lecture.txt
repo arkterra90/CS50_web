@@ -1,0 +1,4 @@
+Lecture 6 User Interfaces:
+-Single-Page Applications
+    -Using Jave a web application can be a single page.
+    -Rapid page loading due to only modifying the DOM and not loading an entire new page.
