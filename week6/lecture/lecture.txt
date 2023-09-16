@@ -2,3 +2,26 @@ Lecture 6 User Interfaces:
 -Single-Page Applications
     -Using Jave a web application can be a single page.
     -Rapid page loading due to only modifying the DOM and not loading an entire new page.
+Django:
+    -We can create views that send json as responses to make api calls.
+    -Json can fetch from our web server what we would like to display in our DOM tree.
+    -We can use console.log to view things much like return with python.
+    -Java uses a query to get the info called AJAX
+    -An advanate in efficieny
+    -We loss being able to tell by the url what page we are on.
+        -We can manipulate the url with history.pushState to add a new element to a users browsing
+        history.
+        -Window.onpopstate can take an event as an arguement to go back to a users state to show
+        the correct state stored in the users history.
+    -java window 
+        -window is what the user actually sees
+        -window.innerWidth knowing how wide the window is
+        -window.innerHeight how high.
+        -window.scrollY how many pixels down you have scrolled
+            -the entire page height is represented by document.body.offsetHeight
+        -Using these we might want to know if a user has scrolled to the bottom of the page.
+            -scrollY + innerHeight has to equal offsetHeight
+            -Could be useful on a website that has infinte scroll like a social media site
+            then AJAX call for additional calls for information
+Animation:
+    -The ability to make something move around and animate. IE change size, color, or position
