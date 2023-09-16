@@ -25,3 +25,13 @@ Django:
             then AJAX call for additional calls for information
 Animation:
     -The ability to make something move around and animate. IE change size, color, or position
+React
+    -A java script libary to allow for a framework to help with java code for user interaction
+    -Based on declarative programming.
+        -Imperative Programming we give the computer commands to execute.
+        -DP is going to allow us to describe what state should be displayed on the page.
+            -<h1>{nim}</h1>
+            -logic: num += 1
+    -Getting react on the Webpage   
+        -React, ReactDOM, Babel
+        -Babel translates code called JSX has some additional features
