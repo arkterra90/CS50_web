@@ -92,6 +92,8 @@ function email_box(mailbox) {
       }
       const emailsView = document.getElementById("emails-view");
 
+      // Function to itterate oover 'emails' and display all emails
+      // for applicable mailbox.
       function displayEmails(emails) {
         emails.forEach((email) => {
           const emailDiv = document.createElement("div");
@@ -142,6 +144,8 @@ function email_view(emailId) {
     .then(response => response.json())
     .then(email => {
 
+
+      // Displays email with appropriate elements call from api response.
       function displayEmail(email) {
         const emailDiv = document.createElement("div");
         emailDiv.innerHTML = `
@@ -151,7 +155,7 @@ function email_view(emailId) {
           <h4>Body:</h4>
           <p>${email.body}</p>
           <br>
-          <button id="archiveButton">Archive</button>
+          <button id="archiveButton">${email.archived ? 'Unarchive' : 'Archive'}</button>
           <button id="reply">Reply</button>
         `;
         document.querySelector('#email_view').appendChild(emailDiv);
@@ -210,8 +214,15 @@ function reply(email) {
   document.querySelector('#compose-view').style.display = 'block';
   document.querySelector('#email_view').style.display = 'none';
 
+  // Checks to see if the subject line already has Re: and makes sure
+  // it is not added again.
+  let subject = email.subject;
+  if (!subject.startsWith('Re:')) {
+    subject = `Re: ${subject}`;
+  }
+
   // Fill composition fields for reply
-  document.querySelector('#compose-recipients').value = `${email.recipients}`;
-  document.querySelector('#compose-subject').value = `Re: ${email.subject}`;
+  document.querySelector('#compose-recipients').value = `${email.sender}`;
+  document.querySelector('#compose-subject').value = subject;
   document.querySelector('#compose-body').value = `\n\nOn ${email.timestamp} ${email.sender} wrote: \n${email.body}`;
 }
