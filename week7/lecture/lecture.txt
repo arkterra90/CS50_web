@@ -1,0 +1,16 @@
+Week7 CI/CD:
+Continuous Integration/Continuous Deilivery
+-Testing:
+    -A way to verify the code is being deployed correct. As it grows more complicated to verify it still
+    behaves the way it is needed to.
+    -Assert states that something should be true. If not true it throws an error. In python3
+    -When ecountering a bug in the program we would want to fix the bug and write a test to make sure
+    the bug doesn't persist in future changes. 
+    -Assures future feature changes don't break older features.
+    -Test can be written with each new feature add to make sure new features don't break old features.
+-Scripts:
+    -We can write a script to test a function to produce an output we would expect.
+-unittest
+    -A library to write test and automate the testing process
+-Django Test.py 
+    -Go to python3 manage.py test
