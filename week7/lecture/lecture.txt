@@ -12,5 +12,12 @@ Continuous Integration/Continuous Deilivery
     -We can write a script to test a function to produce an output we would expect.
 -unittest
     -A library to write test and automate the testing process
+    -assertEqual
+    -assertNotEqual
+    -assertTrue
+    -assertFalse
+    -assertIn
+    -assertNotIn
 -Django Test.py 
     -Go to python3 manage.py test
+    -Checking for webpages in django
