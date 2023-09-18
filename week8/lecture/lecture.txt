@@ -1,0 +1,107 @@
+Scalability and Security:
+    -When we deploy applications we put them on a web server. The serve takes request and responds.
+    -A single server can only handle so many users at a time and need to scale.
+    -Servers can be on the cloud or on premise
+    -Benchmarking
+        -The process of doing some testing to see how many users can use a server and app at the same time.
+    -Vertical Scaling: If the server isn't big enough we simply get a bigger server to handle more users.
+    -Horizontal Scaling: When one server isn't enough then split into multipul servers both running the web app.
+        -How do these servers get their users?
+        -Load Balancer
+            -Request are filtered and sent to the optimal server.
+            -Methods of Balancing
+                -Random Choice: Random assignment between available servers. The advantage of being very simple.
+                -Round Robin: Simply assigns users in sequence between servers. Advantage of simply having to keep count
+                and then assign users in sequence. If some request take longer than other request they could be inconviently stacked
+                on one server.
+                -Fewest Connections: The balancer picks which server has the fewst active connections. Advantage of probably doing a 
+                better job of balancing load. But, could take more resources to take this approach.
+                -All these methods have the issue of sessions and keeping track of user usage of the app.
+            -Session-Aware Load Balancing   
+                -Sticky Sessions: We are sent to the same server each time so we are remembered. Could build up an imbalance on some servers
+                -Sessiosn in Database: Stores sessions inside of a database to remember interaction of the user with the app.
+                -Client-Side Sessions: The idea of cookies stored on the client to give access to the user and their session not
+                matter which session they go to. Draw back is someone could manipulate the cookie and pretend to be someone you
+                are not. They also get sent back and forth each time a request is made.
+            -Overall goal is to make sure the user experience is not broken.
+            -What about the dynamic load of users?
+                -Autoscaling: starts with minimum number of servers and scales up as needed.
+                -Most will allow you to configure for a min and max number of possible servers.
+            -Having multipul servers we don't have a single point of failure.
+                -Having multipul load balancers is also helpful to prevent a single point of failure.
+    -DB's on seperate servers   
+        -Scaling Databases
+            -Database Partioning
+                -Splitting up a database into seperate areas. AKA vertical partioning.
+                -If you split the data by types from say flights to flights_domestic and flights_international we are Horizontal scaling.
+                    -We no longer need to search through the entirety of the dataset.
+            -Can still represent a single point of failure if the database fails.
+            -Just as we added more servers we also might try database Replication.
+                -single-primary replication.
+                    -One DB is both read and written to while others are only read from.
+                    -Anytime the primary DB is changed the others are updated.
+                    -If you have a lot of users writing to the DB the one DB carries the whole load and can be overwhelmed.
+                    -Still has a single point of failure in the single primary DB.
+                -Multi-primary replication.
+                    -Multi DB's to read and write to.
+                    -The sync process gets harder and more expensive because anytime any DB is changed they all have to be updated.
+                    -The sync can run into unique conflicts with row ID's or delete conflicts.
+                        -What if one person try's to delete a row and another update the same row.
+    -Caching:
+        -Storing a saved version of information to quickly access it.
+        -Client-Side Caching    
+            -Saves things on the browser so the next time the page is loaded the data might already be there.
+            -Makes the experience faster for the user, and easier on the server.
+            -HTTP response: Cache-Control: max-age=86400
+                -If the page changes but the client has an old version cached they will only see the old version.
+                -Especially true of static resources like CSS and Java files.
+                -You can add an ETag to let the browser know if there is a current version of a cached file.
+                    -Lets the browser make a decision if they should get a new version of the resource.
+        -Server Side Caching    
+            -Servers can communicate with a cache instead of a DB.
+            -Django Cache Framework
+                -Per-View Cache
+                -Template Fragment Caching
+                    -Caches portions of a template to make loading of individaul parts quicker.
+                -Low-Level Cache API
+                    -After a DB query is made you can keep the info in the cache for quicker access.
+-Security:
+    -Git 
+        -Open-Source Software: Draw back is that if a bug is in the source code someone could take
+        advantage of them. With version control you never want to put keys or passwords in what is 
+        publically viewable.
+        -HTML: a fishing attack where people are incorrectly directed.
+            -Anyone can look at the HTML of any page.
+            -People can create fake versions of a website.
+        -Django 
+            -Much of the internet is based around HTTP and HTTPS, server-to-client then client-to-Server
+            -Secret-Key Cryptography
+                -In the plain text we have a key and text to generate the ciphertext and then send
+                the ciphertext across the internet.
+                -The issue is both parties must have the key and it can't just be sent across the internet.
+            -Public-key Cryptography
+                -Two keys instaed of one with a public and private key.
+                -The public key encrytps the information and the private key decrypts.
+                -They are mathmatically correlated so the private key never has to be shared.
+                -This is how HTTPS works.
+        -SQL
+            -Storing passwords in plain text is incredibly insecure.
+            -The recommended approach is to store a hashed version of the password in your DB.
+            -it should be a one-way hash function.
+            -SQL Injection
+        -API's 
+            -Rate Limiting
+                -Prevents a DOS (denial of service attack)
+            -Route Authenticatoin
+                -Restricting user access with an API key.
+                -We never want an API key in a git commit.
+                    -One common solution to this is to use environment variables within the server or
+                    personal computer.
+        -Java Script 
+            -Cross-Site Scripting
+                -We only want java to run that we have written.
+                -Similar threat to sql Injection.
+        -Cross-Site Request Forgery
+            -Django does a good job with this with csrf tokens
+            -All request for changes should not be done via a get request. We only want
+            post request to transfer from one user to another.
