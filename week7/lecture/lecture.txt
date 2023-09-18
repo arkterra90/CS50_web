@@ -36,3 +36,6 @@ Continuous Integration/Continuous Deilivery
         -Can check coding style, run test, and verify functionality of code.
         -YAML a file format used by Actions 
             -key1: value1
+    -Continuous deployment  
+        -Docker: A contanerization system to allow you to run the right packets and software
+        so you app works in the cloud.
