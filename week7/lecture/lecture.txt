@@ -21,3 +21,18 @@ Continuous Integration/Continuous Deilivery
 -Django Test.py 
     -Go to python3 manage.py test
     -Checking for webpages in django
+-Selenium browser testing
+-Continuous Integration/Continuous Deilivery
+    -CI 
+        -Frequent merges to main branch
+        -Automated unit testing
+            -Verifies each little part can work as expected
+    -CD 
+        -Short release schedules
+        -If something goes wrong you know immediately
+        -Allows new features to quickly go to users. helps in a competitive market
+    -GitHub Actions
+        -Allows the creation of a work flow to check steps of deployment
+        -Can check coding style, run test, and verify functionality of code.
+        -YAML a file format used by Actions 
+            -key1: value1
