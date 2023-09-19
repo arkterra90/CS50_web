@@ -17,7 +17,7 @@
     {% for post in page_obj %}
     <div id="postPage" class="border border-dark p-4 rounded shadow-sm" style="width: 80%; margin: 10px auto; background-color: #f0f0f0; padding: 10px;">
         <p>{{ post.text }}</p>
-        <p>User: {{ post.user }}</p>
+        <p>User: <a href="{% url 'user' post.user.id %}">{{ post.user.username }}</a></p>
         <p>{{ post.timeStamp }}</p>
     </div>
     {% endfor %}

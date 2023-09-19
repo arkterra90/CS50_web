@@ -21,3 +21,21 @@ class Post(models.Model):
         post = cls(user=user, text=text)
         post.save()
         return post
+    
+class Follower(models.Model):
+
+    #The user following
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    #The user beinng followed
+    userfollow = models.IntegerField()
+    dateFollowed = models.DateTimeField(auto_now_add=True)
+    currentFollow = models.BooleanField()
+
+    def __str__(self):
+        return f"{self.id} {self.user} {self.userfollow} {self.dateFollowed} {self.currentFollow}"
+    
+    @classmethod
+    def create_follow(cls, user, userfollow):
+        follow = cls(user=user, userfollow=userfollow)
+        follow.save()
+        return follow

@@ -8,6 +8,24 @@ from django.core.paginator import Paginator
 
 from .models import *
 
+def follow(request, user_id):
+
+    if request.method == "POST":
+        already_follow = Follower.objects.filter(user=request.user, userfollow=user_id).exists()
+
+        # If the user is already followed do not create new follow entry and return to user page.
+        if already_follow:
+            return HttpResponseRedirect(reverse("user", args=[user_id]))
+        
+        # If user is not followed creates new follow entry and returns to user page.
+        else:
+            try:
+                Follower.create_follow(user=request.user, userfollow=user_id)
+            except IntegrityError:
+                return render(request, "network/index.html", {
+                    "message": "Could not Follow User"
+                })
+        return HttpResponseRedirect(reverse("user", args=[user_id]))
 
 def index(request):
 
@@ -17,7 +35,6 @@ def index(request):
     page_obj = paginator.get_page(page_number)
     has_previous_page = page_obj.has_previous
     
-    print(page_obj.count)
     return render(request, "network/index.html", {
         "allPost": allPost,
         "page_obj": page_obj,
@@ -35,7 +52,7 @@ def post(request):
                     "message": "Could Not Create New Post"
                 })
 
-    return render(request, "network/index.html")
+    return HttpResponseRedirect(reverse("index"))
 
 
 
@@ -90,15 +107,25 @@ def register(request):
     else:
         return render(request, "network/register.html")
 
-def user(request):
-
-    logged_in_user = request.user
-
-    # Gets all post made by active user
-    userPost = Post.objects.filter(user = request.user).order_by('-timeStamp')
+def user(request, user_id):
 
     #Gets all needed info for profile page
-    user_info = User.objects.filter(username = logged_in_user.username).first()
+    user_info = User.objects.filter(id = user_id).first()
 
-    print(userPost)
-    return render(request, "network/user.html")
+    # Gets all post made by active user
+    userPost = Post.objects.filter(user = user_info).order_by('-timeStamp')
+
+    already_follow = Follower.objects.filter(user=request.user, userfollow=user_id).exists()
+
+
+    paginator = Paginator(userPost, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    has_previous_page = page_obj.has_previous
+
+    return render(request, "network/user.html",{
+        "page_obj": page_obj,
+        "user_info": user_info,
+        "has_previous_page": has_previous_page,
+        "already_follow": already_follow
+    })
