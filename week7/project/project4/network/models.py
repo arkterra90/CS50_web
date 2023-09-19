@@ -5,6 +5,9 @@ from django.db import models
 class User(AbstractUser):
     pass
 
+    def __str__(self):
+        return f"{self.id} {self.username} {self.first_name} {self.last_name} {self.last_login} {self.date_joined} {self.email}"
+
 class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField(verbose_name="Post Text")

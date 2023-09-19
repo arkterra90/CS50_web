@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
@@ -14,11 +15,13 @@ def index(request):
     paginator = Paginator(allPost, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    has_previous_page = page_obj.has_previous
     
-    print(paginator.num_pages)
+    print(page_obj.count)
     return render(request, "network/index.html", {
         "allPost": allPost,
-        "page_obj": page_obj
+        "page_obj": page_obj,
+        "has_previous_page": has_previous_page
     })
 
 def post(request):
@@ -86,3 +89,16 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "network/register.html")
+
+def user(request):
+
+    logged_in_user = request.user
+
+    # Gets all post made by active user
+    userPost = Post.objects.filter(user = request.user).order_by('-timeStamp')
+
+    #Gets all needed info for profile page
+    user_info = User.objects.filter(username = logged_in_user.username).first()
+
+    print(userPost)
+    return render(request, "network/user.html")
