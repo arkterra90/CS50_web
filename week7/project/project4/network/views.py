@@ -11,14 +11,14 @@ from .models import *
 def index(request):
 
     allPost = Post.objects.all().order_by('-timeStamp')
-    p =  Paginator(allPost, 2)
-    page_number = 1
-    page = p.get_page(page_number)
-
+    paginator = Paginator(allPost, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     
+    print(paginator.num_pages)
     return render(request, "network/index.html", {
         "allPost": allPost,
-        "p": page
+        "page_obj": page_obj
     })
 
 def post(request):
