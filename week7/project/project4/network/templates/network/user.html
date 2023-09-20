@@ -1,24 +1,27 @@
 {% extends "network/layout.html" %}
+{% load static %}
 
 {% block body %}
 
 <div name="userProfileHead" style="margin: 20px;"> 
-
     <h5>User Profile:</h5>
     <p>{{ user_info.username }}</p>
     <p>Followers: </p>
     <p>Following: </p>
-    <form method="post" action="{% url 'follow' user_info.id %}">
+        <form id="followForm">
+    <!-- <form method="post" action="{% url 'follow' user_info.id %}"> -->
         {% csrf_token %}
-        <input type="hidden" name="user_id" value="{{ user_info.id }}">
-        {% if already_follow %}
-        <button type="submit" name="userFollow">Unfollow Me</button>
-        {% else %}
-        <button type="submit" name="unfollowUser">Follow Me</button>
-        {% endif %}
+        <input type="hidden" name="user_id" id="user_id" value="{{ user_info.id }}">
+        <button type="submit" name="follow" class="follow-button" id="followButton" data-user-id="{{ user_info.id }}">
+            {% if already_follow %}
+                Unfollow Me
+            {% else %}
+                Follow Me
+            {% endif %}
+        </button>
     </form>
-
 </div>
+
 
 <div name="userPost">
 
@@ -65,5 +68,10 @@
     </nav>
 
 </div>
+
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'network/network.js' %}"></script>
 
 {% endblock %}

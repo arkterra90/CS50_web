@@ -1,31 +1,61 @@
+import json
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 from django.core.paginator import Paginator
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
+
+
 
 from .models import *
 
-def follow(request, user_id):
+from django.http import JsonResponse
 
-    if request.method == "POST":
-        already_follow = Follower.objects.filter(user=request.user, userfollow=user_id).exists()
 
-        # If the user is already followed do not create new follow entry and return to user page.
-        if already_follow:
-            return HttpResponseRedirect(reverse("user", args=[user_id]))
+@csrf_exempt
+@login_required
+def follow(request):
+
+    if request.method != "POST":
+        return JsonResponse({"error": "POST request required."}, status=400)
+    
+    data = json.loads(request.body)
+
+    user_id = data.get("user_id", "")
+    userfollow = data.get("userfollow", False)  # Default to False if not provided
+
+    print(user_id, userfollow)
+    # Implement your follow/unfollow logic here
+    # You can use 'user_id' and 'userfollow' to update your database accordingly
+
+    # Example: If 'userfollow' is True, you can add a new follower; if False, you can remove the follower.
+
+    # Return a success response
+    return JsonResponse({"success": True})
+
+
+# def follow(request, user_id):
+
+#     if request.method == "POST":
+#         already_follow = Follower.objects.filter(user=request.user, userfollow=user_id).exists()
+
+#         # If the user is already followed do not create new follow entry and return to user page.
+#         if already_follow:
+#             return HttpResponseRedirect(reverse("user", args=[user_id]))
         
-        # If user is not followed creates new follow entry and returns to user page.
-        else:
-            try:
-                Follower.create_follow(user=request.user, userfollow=user_id)
-            except IntegrityError:
-                return render(request, "network/index.html", {
-                    "message": "Could not Follow User"
-                })
-        return HttpResponseRedirect(reverse("user", args=[user_id]))
+#         # If user is not followed creates new follow entry and returns to user page.
+#         else:
+#             try:
+#                 Follower.create_follow(user=request.user, userfollow=user_id)
+#             except IntegrityError:
+#                 return render(request, "network/index.html", {
+#                     "message": "Could not Follow User"
+#                 })
+#         return HttpResponseRedirect(reverse("user", args=[user_id]))
 
 def index(request):
 
