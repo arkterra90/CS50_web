@@ -26,16 +26,23 @@ def follow(request):
     data = json.loads(request.body)
 
     user_id = data.get("user_id", "")
-    userfollow = data.get("userfollow", False)  # Default to False if not provided
+    ifFollower = data.get("ifFollower", "")
 
-    print(user_id, userfollow)
-    # Implement your follow/unfollow logic here
-    # You can use 'user_id' and 'userfollow' to update your database accordingly
+    print(user_id, ifFollower)
 
-    # Example: If 'userfollow' is True, you can add a new follower; if False, you can remove the follower.
+    if ifFollower:  # Check if the user wants to follow
+        try:
+            Follower.create_follow(user=request.user, userfollow=user_id, currentFollow=True)
+            return JsonResponse({"success": "New Follow Created"})
+        except IntegrityError:
+            return JsonResponse({"error": "Could not create user follow record"})
+    else:
+        already_follow = Follower.objects.filter(user=request.user, userfollow=user_id)
+        if already_follow.exists():
+            return JsonResponse({"success": "Already a follower"})
+        else:
+            return JsonResponse({"error": "Not a follower"})
 
-    # Return a success response
-    return JsonResponse({"success": True})
 
 
 # def follow(request, user_id):

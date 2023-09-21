@@ -35,7 +35,7 @@ class Follower(models.Model):
         return f"{self.id} {self.user} {self.userfollow} {self.dateFollowed} {self.currentFollow}"
     
     @classmethod
-    def create_follow(cls, user, userfollow):
-        follow = cls(user=user, userfollow=userfollow)
+    def create_follow(cls, user, userfollow, currentFollow):
+        follow = cls(user=user, userfollow=userfollow, currentFollow=currentFollow)
         follow.save()
         return follow
