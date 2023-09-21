@@ -62,26 +62,6 @@ def follow(request):
             return JsonResponse({"error": "Not a follower"})
 
 
-
-# def follow(request, user_id):
-
-#     if request.method == "POST":
-#         already_follow = Follower.objects.filter(user=request.user, userfollow=user_id).exists()
-
-#         # If the user is already followed do not create new follow entry and return to user page.
-#         if already_follow:
-#             return HttpResponseRedirect(reverse("user", args=[user_id]))
-        
-#         # If user is not followed creates new follow entry and returns to user page.
-#         else:
-#             try:
-#                 Follower.create_follow(user=request.user, userfollow=user_id)
-#             except IntegrityError:
-#                 return render(request, "network/index.html", {
-#                     "message": "Could not Follow User"
-#                 })
-#         return HttpResponseRedirect(reverse("user", args=[user_id]))
-
 def index(request):
 
     allPost = Post.objects.all().order_by('-timeStamp')
@@ -178,9 +158,21 @@ def user(request, user_id):
     page_obj = paginator.get_page(page_number)
     has_previous_page = page_obj.has_previous
 
-    return render(request, "network/user.html",{
-        "page_obj": page_obj,
-        "user_info": user_info,
-        "has_previous_page": has_previous_page,
-        "already_follow": already_follow
-    })
+    logInId = request.user.id
+    print(logInId)
+    if user_id == request.user.id:
+        return render(request, "network/profile.html",{
+            "page_obj": page_obj,
+            "user_info": user_info,
+            "has_previous_page": has_previous_page,
+            "already_follow": already_follow
+        })
+    
+    else:
+
+        return render(request, "network/user.html",{
+            "page_obj": page_obj,
+            "user_info": user_info,
+            "has_previous_page": has_previous_page,
+            "already_follow": already_follow
+        })

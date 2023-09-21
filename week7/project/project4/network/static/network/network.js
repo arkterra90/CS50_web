@@ -1,4 +1,6 @@
 document.addEventListener('click', function(event) {
+
+    // Triggers follow function.
     if (event.target && event.target.id === 'followButton') {
         follow(event);
     }
@@ -24,13 +26,12 @@ function follow(event) {
         .then(response => response.json())
         .then(result => {
             console.log(result);
-            // Implement inner html change of button to reflect follow state.
+            // Inner HTML change to followButton to reflect state of follow
             if (result.success === 'New Follow Created') {
                 followButton.textContent = 'Unfollow Me';
             } else if (result.success === 'Already a follower') {
                 followButton.textContent = 'Follow Me';
             }
         });
-
     };
 }
