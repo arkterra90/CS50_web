@@ -15,7 +15,7 @@ from .models import *
 
 from django.http import JsonResponse
 
-
+# Allows a user to follow and unfollow other users using follow as an API route for AJAX request.
 @csrf_exempt
 @login_required
 def follow(request):
@@ -27,18 +27,36 @@ def follow(request):
 
     user_id = data.get("user_id", "")
     ifFollower = data.get("ifFollower", "")
+    already_follow = Follower.objects.filter(user=request.user, userfollow=user_id)
 
     print(user_id, ifFollower)
 
-    if ifFollower:  # Check if the user wants to follow
+    if ifFollower:
         try:
-            Follower.create_follow(user=request.user, userfollow=user_id, currentFollow=True)
-            return JsonResponse({"success": "New Follow Created"})
+            # To prevent making duplicate model entries model is checked for previous follow of
+            # user and if found currentFollow is changed to True to reflect users re-following of
+            # user.
+            if already_follow.exists():
+                follower_instance = already_follow.first()
+                follower_instance.currentFollow = True
+                follower_instance.save()
+                return JsonResponse({"success": "New Follow Created"})
+
+            # if already_follow.exists() is none a new entry is added to the Follower model
+            else:
+                Follower.create_follow(user=request.user, userfollow=user_id, currentFollow=True)
+                return JsonResponse({"success": "New Follow Created"})
         except IntegrityError:
             return JsonResponse({"error": "Could not create user follow record"})
+        
+    # If the user current follows the profile and clicks to unfollow the profile
+    # the Follower model is changed to reflect the users desire to unfollow the profile.
     else:
-        already_follow = Follower.objects.filter(user=request.user, userfollow=user_id)
+        
         if already_follow.exists():
+            follower_instance = already_follow.first()
+            follower_instance.currentFollow = False
+            follower_instance.save()
             return JsonResponse({"success": "Already a follower"})
         else:
             return JsonResponse({"error": "Not a follower"})
