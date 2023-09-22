@@ -19,8 +19,6 @@ function like(event) {
     const postId = postElement.getAttribute('data-post-id');
     const userId = postElement.getAttribute('data-user-id');
 
-    console.log(postId, userId);
-
     fetch('/like', {
         method: 'POST',
         body: JSON.stringify({
@@ -28,8 +26,10 @@ function like(event) {
             userId: userId
         })
     })
+        // Takes responce and alters button html accordingly.
         .then(response => response.json())
         .then(result => {
+            console.log(result);
             if (result.success === 'post liked') {
                 postElement.textContent = 'Unlike'; 
             } else {

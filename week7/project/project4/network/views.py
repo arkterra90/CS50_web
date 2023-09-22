@@ -70,18 +70,29 @@ def like(request):
 
     postExist = Post.objects.get(id=postId)
     alreadyLike = PostLike.objects.filter(post=postExist, user=userId)
+    
+    # Checks if logged in user is the same as the post creator user.
+    loggedinuser = request.user.id
+    post_instance = alreadyLike.first()
 
-    # If user has previously liked the post the user can unlike and relike 
-    # without creating duplicate PostLike model entries.
     if alreadyLike.exists():
-        postLike_instance = alreadyLike.first()
-        postLike_instance.currentLike = not postLike_instance.currentLike
-        postLike_instance.save()
+        if post_instance.user == loggedinuser:
+            print("equal", post_instance.user, loggedinuser)
+            post_instance.currentLike = not post_instance.currentLike
+            post_instance.save()
 
-        if postLike_instance.currentLike:
-            return JsonResponse({"success": "post liked"})
+            if post_instance.currentLike:
+                return JsonResponse({"success": "post liked"})
+            else:
+                return JsonResponse({"success": "post unliked"})
+            
         else:
-            return JsonResponse({"success": "post unliked"})
+            print("not equal", post_instance.user, loggedinuser) 
+            try:
+                PostLike.create_PostLike(post=postExist, user=userId, currentLike=True)
+                return JsonResponse({"success": "post liked"})
+            except IntegrityError:
+                return JsonResponse({"error": "could not create post like record"})
 
     # If user has never liked the post before the user can like a post.
     else:
