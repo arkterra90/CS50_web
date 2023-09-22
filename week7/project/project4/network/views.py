@@ -29,8 +29,6 @@ def follow(request):
     ifFollower = data.get("ifFollower", "")
     already_follow = Follower.objects.filter(user=request.user, userfollow=user_id)
 
-    print(user_id, ifFollower)
-
     if ifFollower:
         try:
             # To prevent making duplicate model entries model is checked for previous follow of
@@ -52,7 +50,6 @@ def follow(request):
     # If the user current follows the profile and clicks to unfollow the profile
     # the Follower model is changed to reflect the users desire to unfollow the profile.
     else:
-        
         if already_follow.exists():
             follower_instance = already_follow.first()
             follower_instance.currentFollow = False
@@ -60,6 +57,39 @@ def follow(request):
             return JsonResponse({"success": "Already a follower"})
         else:
             return JsonResponse({"error": "Not a follower"})
+
+@login_required
+@csrf_exempt
+def like(request):
+    if request.method != "POST":
+        return JsonResponse({"error": "POST request required"}, status=400)
+    
+    data = json.loads(request.body)
+    postId = data.get("postId", "")
+    userId = data.get("userId", "")
+
+    postExist = Post.objects.get(id=postId)
+    alreadyLike = PostLike.objects.filter(post=postExist, user=userId)
+
+    # If user has previously liked the post the user can unlike and relike 
+    # without creating duplicate PostLike model entries.
+    if alreadyLike.exists():
+        postLike_instance = alreadyLike.first()
+        postLike_instance.currentLike = not postLike_instance.currentLike
+        postLike_instance.save()
+
+        if postLike_instance.currentLike:
+            return JsonResponse({"success": "post liked"})
+        else:
+            return JsonResponse({"success": "post unliked"})
+
+    # If user has never liked the post before the user can like a post.
+    else:
+        try:
+            PostLike.create_PostLike(post=postExist, user=userId, currentLike=True)
+            return JsonResponse({"success": "post liked"})
+        except IntegrityError:
+            return JsonResponse({"error": "could not create post like record"})
 
 
 def index(request):
@@ -69,6 +99,9 @@ def index(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     has_previous_page = page_obj.has_previous
+
+    # Need to make query to postlike model to count how many likes are available
+    # for each post and send as a dictionary.
     
     return render(request, "network/index.html", {
         "allPost": allPost,

@@ -22,6 +22,22 @@ class Post(models.Model):
         post.save()
         return post
     
+class PostLike(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    user = models.IntegerField()
+    currentLike = models.BooleanField()
+    likeDate = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.post} {self.user} {self.currentLike} {self.likeDate}"
+    
+    @classmethod
+    def create_PostLike(cls, post, user, currentLike):
+        PostLike = cls(post=post, user=user, currentLike=currentLike)
+        PostLike.save()
+        return PostLike
+
+
 class Follower(models.Model):
 
     #The user following

@@ -12,7 +12,7 @@
     <!-- <form method="post" action="{% url 'follow' user_info.id %}"> -->
         {% csrf_token %}
         <input type="hidden" name="user_id" id="user_id" value="{{ user_info.id }}">
-        <button type="submit" name="follow" class="follow-button" id="followButton" data-user-id="{{ user_info.id }}">
+        <button type="submit" name="follow" id="followButton" data-user-id="{{ user_info.id }}">
             {% if already_follow %}
                 Unfollow Me
             {% else %}
@@ -72,6 +72,6 @@
 {% endblock %}
 
 {% block script %}
-<script src="{% static 'network/network.js' %}"></script>
+<script src="{% static 'network/follow.js' %}"></script>
 
 {% endblock %}

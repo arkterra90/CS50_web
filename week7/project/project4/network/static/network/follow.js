@@ -1,9 +1,8 @@
-document.addEventListener('click', function(event) {
+document.addEventListener('DOMContentLoaded', function() {
 
-    // Triggers follow function.
-    if (event.target && event.target.id === 'followButton') {
-        follow(event);
-    }
+    document.querySelector('#followButton').addEventListener('click', follow);
+    
+    // document.querySelector('#postLike').addEventListener('onClick', like);
 });
 
 function follow(event) {
