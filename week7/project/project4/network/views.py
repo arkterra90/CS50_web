@@ -66,45 +66,30 @@ def like(request):
     
     data = json.loads(request.body)
     postId = data.get("postId", "")
-    userId = data.get("userId", "")
-
+    # userId = data.get("userId", "")
+    
+    loggedinuser = request.user.id
     postExist = Post.objects.get(id=postId)
-    alreadyLike = PostLike.objects.filter(post=postExist, user=userId)
+    alreadyLike = PostLike.objects.filter(post=postExist, user=loggedinuser)
     
     # Checks if logged in user is the same as the post creator user.
-    loggedinuser = request.user.id
+    
     postLike_instance = alreadyLike.first()
-    post_instance = postExist.user.id
-    print(post_instance)
+    
+    print(alreadyLike, loggedinuser)
 
 
     if alreadyLike.exists():
-        if post_instance == loggedinuser:
-            if postLike_instance.user != loggedinuser:
-                postLike_instance.currentLike = not postLike_instance.currentLike
-                postLike_instance.save()
-                if postLike_instance.currentLike:
-                    return JsonResponse({"success": "post liked"})
-                else:
-                    return JsonResponse({"success": "post unliked"})
-            else:
-                try:
-                    PostLike.create_PostLike(post=postExist, user=userId, currentLike=True)
-                    return JsonResponse({"success": "post liked"})
-                except IntegrityError:
-                    return JsonResponse({"error": "could not create post like record"}, status=400)
         if postLike_instance.user == loggedinuser:
             postLike_instance.currentLike = not postLike_instance.currentLike
             postLike_instance.save()
-
             if postLike_instance.currentLike:
                 return JsonResponse({"success": "post liked"})
             else:
                 return JsonResponse({"success": "post unliked"})
-            
         else:
             try:
-                PostLike.create_PostLike(post=postExist, user=userId, currentLike=True)
+                PostLike.create_PostLike(post=postExist, user=loggedinuser, currentLike=True)
                 return JsonResponse({"success": "post liked"})
             except IntegrityError:
                 return JsonResponse({"error": "could not create post like record"}, status=400)
@@ -112,7 +97,7 @@ def like(request):
     # If user has never liked the post before the user can like a post.
     else:
         try:
-            PostLike.create_PostLike(post=postExist, user=userId, currentLike=True)
+            PostLike.create_PostLike(post=postExist, user=loggedinuser, currentLike=True)
             return JsonResponse({"success": "post liked"})
         except IntegrityError:
             return JsonResponse({"error": "could not create post like record"}, status=400)
