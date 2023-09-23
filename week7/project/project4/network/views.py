@@ -8,6 +8,7 @@ from django.urls import reverse
 from django.core.paginator import Paginator
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
+from .utils import handle_post_like_creation, update_post_like_count
 
 
 
@@ -66,41 +67,38 @@ def like(request):
     
     data = json.loads(request.body)
     postId = data.get("postId", "")
-    # userId = data.get("userId", "")
-    
+
     loggedinuser = request.user.id
     postExist = Post.objects.get(id=postId)
     alreadyLike = PostLike.objects.filter(post=postExist, user=loggedinuser)
     
+    
     # Checks if logged in user is the same as the post creator user.
-    
     postLike_instance = alreadyLike.first()
-    
-    print(alreadyLike, loggedinuser)
-
 
     if alreadyLike.exists():
         if postLike_instance.user == loggedinuser:
             postLike_instance.currentLike = not postLike_instance.currentLike
             postLike_instance.save()
             if postLike_instance.currentLike:
+                update_post_like_count(postExist)
                 return JsonResponse({"success": "post liked"})
             else:
+                update_post_like_count(postExist)
                 return JsonResponse({"success": "post unliked"})
         else:
-            try:
-                PostLike.create_PostLike(post=postExist, user=loggedinuser, currentLike=True)
-                return JsonResponse({"success": "post liked"})
-            except IntegrityError:
-                return JsonResponse({"error": "could not create post like record"}, status=400)
+            result = handle_post_like_creation(post=postExist, user=loggedinuser)
+            update_post_like_count(postExist)
+            return result
 
-    # If user has never liked the post before the user can like a post.
+    # If user has never liked the post before, the user can like a post.
     else:
-        try:
-            PostLike.create_PostLike(post=postExist, user=loggedinuser, currentLike=True)
-            return JsonResponse({"success": "post liked"})
-        except IntegrityError:
-            return JsonResponse({"error": "could not create post like record"}, status=400)
+        result = handle_post_like_creation(post=postExist, user=loggedinuser)
+        update_post_like_count(postExist)
+        return result
+
+    # Moved outside the if-else blocks
+    
 
 
 def index(request):

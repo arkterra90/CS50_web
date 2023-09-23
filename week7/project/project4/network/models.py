@@ -12,9 +12,10 @@ class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField(verbose_name="Post Text")
     timeStamp = models.DateTimeField(auto_now_add=True)
+    likeCount = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
-        return f"{self.id}: {self.user} {self.text} {self.timeStamp}"
+        return f"{self.id}: {self.user} {self.text} {self.timeStamp} {self.likeCount}"
     
     @classmethod
     def create_post(cls, user, text):
