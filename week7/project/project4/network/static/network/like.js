@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     likeButtons.forEach(button => {
         button.addEventListener('click', like);
     });
+
 });
 
 

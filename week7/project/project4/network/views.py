@@ -34,13 +34,21 @@ def follow_page(request):
     page_obj = paginator.get_page(page_number)
     has_previous_page = page_obj.has_previous
 
+     # Query to get post the user has already liked
+    userLikes = PostLike.objects.filter(user=request.user.id, currentLike=True)
+    userLikesPostId = []
+    for likes in userLikes:
+            likeId = likes.post
+            userLikesPostId.append(likeId)
+
     # Need to make query to postlike model to count how many likes are available
     # for each post and send as a dictionary.
     
     return render(request, "network/follow.html", {
         "allPost": allPost,
         "page_obj": page_obj,
-        "has_previous_page": has_previous_page
+        "has_previous_page": has_previous_page,
+        "userLikes": userLikesPostId
     })
 
     print(followedUserPost)
@@ -134,11 +142,20 @@ def like(request):
 
 def index(request):
 
+    # Query to get all post and paginate the post
     allPost = Post.objects.all().order_by('-timeStamp')
     paginator = Paginator(allPost, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     has_previous_page = page_obj.has_previous
+
+    # Query to get post the user has already liked
+    userLikes = PostLike.objects.filter(user=request.user.id, currentLike=True)
+    userLikesPostId = []
+    for likes in userLikes:
+            likeId = likes.post
+            userLikesPostId.append(likeId)
+
 
     # Need to make query to postlike model to count how many likes are available
     # for each post and send as a dictionary.
@@ -146,7 +163,8 @@ def index(request):
     return render(request, "network/index.html", {
         "allPost": allPost,
         "page_obj": page_obj,
-        "has_previous_page": has_previous_page
+        "has_previous_page": has_previous_page,
+        "userLikes": userLikesPostId
     })
 
 def post(request):

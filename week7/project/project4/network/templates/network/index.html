@@ -20,10 +20,21 @@
         <p>{{ post.text }}</p>
         <p>User: <a href="{% url 'user' post.user.id %}">{{ post.user.username }}</a></p>
         <p>{{ post.timeStamp }}</p>
-        <button type="submit" id="postLike" class="post-like-button" data-post-id="{{ post.id }}" data-user-id="{{ post.user.id }}">Like</button>
-        <p>Post Likes: {{ post.likeCount }}</p>
+        <button type="submit" id="postLike" class="post-like-button" data-post-id="{{ post.id }}" data-user-id="{{ post.user.id }}">
+            {% if post in userLikes %}
+                Unlike
+            {% else %}
+                Like 
+            {% endif %}
+        </button>
+        <p>Post Likes: {% if post.likeCount == None %}
+            0
+        {% else %}
+            {{ post.likeCount }}
+        {% endif %}</p>
     </div>
     {% endfor %}
+
 
     <nav aria-label="Page navigation">
         <ul class="pagination justify-content-center">
