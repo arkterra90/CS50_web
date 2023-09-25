@@ -16,6 +16,37 @@ from .models import *
 
 from django.http import JsonResponse
 
+@login_required
+def follow_page(request):
+
+    user = request.user
+    userFollows = Follower.objects.filter(user=user)
+    userFollowList = []
+    # userFollowPost = Post.objects.filter(user=userFollows.userfollow).order_by('-timestamp')
+    for follwerId in userFollows:
+        userFollowId = follwerId.userfollow
+        userFollowList.append(userFollowId)
+
+    followedUsers = User.objects.filter(id__in=userFollowList)
+    allPost = Post.objects.filter(user__in=followedUsers).order_by('-timeStamp')
+    paginator = Paginator(allPost, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    has_previous_page = page_obj.has_previous
+
+    # Need to make query to postlike model to count how many likes are available
+    # for each post and send as a dictionary.
+    
+    return render(request, "network/follow.html", {
+        "allPost": allPost,
+        "page_obj": page_obj,
+        "has_previous_page": has_previous_page
+    })
+
+    print(followedUserPost)
+    
+    return render(request, "network/follow.html")
+
 # Allows a user to follow and unfollow other users using follow as an API route for AJAX request.
 @csrf_exempt
 @login_required

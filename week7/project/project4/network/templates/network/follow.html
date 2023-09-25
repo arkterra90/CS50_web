@@ -3,34 +3,29 @@
 
 {% block body %}
 
-<div name="userProfileHead" style="margin: 20px;"> 
-    <h5>User Profile:</h5>
-    <p>{{ user_info.username }}</p>
-    <p>Followers: </p>
-    <p>Following: </p>
-        <form id="followForm">
-    <!-- <form method="post" action="{% url 'follow' user_info.id %}"> -->
-        {% csrf_token %}
-        <input type="hidden" name="user_id" id="user_id" value="{{ user_info.id }}">
-        <button type="submit" name="follow" id="followButton" data-user-id="{{ user_info.id }}">
-            {% if already_follow %}
-                Unfollow Me
-            {% else %}
-                Follow Me
-            {% endif %}
-        </button>
-    </form>
-</div>
+    <!-- <div id="newPost" class="border border-dark p-4 rounded shadow-sm" style="width: 80%; margin: 0 auto; background-color: #f0f0f0;">
+        <form method="post" action="{% url 'post' %}">
+            {% csrf_token %}
+            <h2 class="mb-4">New Post</h2>
+            <div class="d-flex flex-column align-items-center">
+                <input id="newPostBox" class="form-control mb-2" type="text" name="newPostBox" placeholder="Write your post...">
+                <input type="hidden" name="network_user" value="{{ user.username }}">
+                <button type="submit" id="newPostSubmit" style="align-self: flex-start;" class="btn btn-primary">Submit Post</button>
+            </div>
+        </form>
+    </div> -->
 
-
-<div name="userPost">
-
+    <div id="followPageHeader" style="margin: 40px;">
+        <h2>Following</h2>
+    </div>
+    
     {% for post in page_obj %}
     <div id="postPage" class="border border-dark p-4 rounded shadow-sm" style="width: 80%; margin: 10px auto; background-color: #f0f0f0; padding: 10px;">
         <p>{{ post.text }}</p>
-        <p>User: {{ post.user.username }}</p>
-        <p>Created On: {{ post.timeStamp }}</p>
-        <p>Post Like: {{ post.likeCount }}</p>
+        <p>User: <a href="{% url 'user' post.user.id %}">{{ post.user.username }}</a></p>
+        <p>{{ post.timeStamp }}</p>
+        <button type="submit" id="postLike" class="post-like-button" data-post-id="{{ post.id }}" data-user-id="{{ post.user.id }}">Like</button>
+        <p>Post Likes: {{ post.likeCount }}</p>
     </div>
     {% endfor %}
 
@@ -67,12 +62,22 @@
             {% endif %}
         </ul>
     </nav>
+    
 
-</div>
+    
 
+    {% if message %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            alert("{{ message|escapejs }}")
+        });
+    </script>
+    {% endif %}
+
+   
 {% endblock %}
 
 {% block script %}
-<script src="{% static 'network/follow.js' %}"></script>
-
+<script src="{% static 'network/like.js' %}"></script>
 {% endblock %}
+
