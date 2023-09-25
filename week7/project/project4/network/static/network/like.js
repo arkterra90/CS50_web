@@ -39,5 +39,16 @@ function like(event) {
                 }
             }
         });
-    
+ 
+    fetch('/likeCount', {
+        method: 'POST',
+        body: JSON.stringify({
+            postId: postId
+        })
+    })
+
+        .then(response => response.json())
+        .then(result => {
+            console.log(result);
+        })
 }

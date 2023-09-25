@@ -16,6 +16,7 @@ urlpatterns = [
 
     # API Routes for follow button
     path("follow", views.follow, name="compose"),
-    path("like", views.like, name="like")
+    path("like", views.like, name="like"),
+    path("likeCount", views.likeCount, name="likeCount")
 
     ]

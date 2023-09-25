@@ -120,25 +120,32 @@ def like(request):
             postLike_instance.currentLike = not postLike_instance.currentLike
             postLike_instance.save()
             if postLike_instance.currentLike:
-                update_post_like_count(postExist)
                 return JsonResponse({"success": "post liked"})
             else:
-                update_post_like_count(postExist)
                 return JsonResponse({"success": "post unliked"})
         else:
             result = handle_post_like_creation(post=postExist, user=loggedinuser)
-            update_post_like_count(postExist)
             return result
 
     # If user has never liked the post before, the user can like a post.
     else:
         result = handle_post_like_creation(post=postExist, user=loggedinuser)
-        update_post_like_count(postExist)
         return result
 
     # Moved outside the if-else blocks
     
+@login_required
+@csrf_exempt 
+def likeCount(request):
+    if request.method != "POST":
+        return JsonResponse({"error": "POST request required"})
+    
+    data = json.loads(request.body)
+    postID = data.get("postId", "")
+    postExist = Post.objects.get(id=postID)
 
+    update_post_like_count(postExist)
+    return JsonResponse({"success": "post like count updated"})
 
 def index(request):
 
