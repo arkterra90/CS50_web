@@ -12,5 +12,6 @@ def handle_post_like_creation(post, user):
 
 def update_post_like_count(post):
     postLikeCount = PostLike.objects.filter(post=post, currentLike=True).count()
+    print(postLikeCount)
     post.likeCount = postLikeCount
     post.save()

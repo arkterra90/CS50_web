@@ -40,15 +40,21 @@ function like(event) {
             }
         });
  
-    fetch('/likeCount', {
-        method: 'POST',
-        body: JSON.stringify({
-            postId: postId
+        console.log(postStatus)
+        fetch('/likeCount', {
+            method: 'POST',
+            body: JSON.stringify({
+                postId: postId,
+            })
         })
-    })
-
-        .then(response => response.json())
-        .then(result => {
-            console.log(result);
-        })
+            .then(response => response.json())
+            .then(result => {
+                console.log(result);
+        
+                // Update the post like count in the HTML element
+                const postLikeCountElement = document.querySelector(`#postLikeCount-${postId}`);
+                if (postLikeCountElement) {
+                    postLikeCountElement.textContent = result.likeCount;
+                }
+            });
 }

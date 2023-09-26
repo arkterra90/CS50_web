@@ -9,6 +9,7 @@ from django.core.paginator import Paginator
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from .utils import handle_post_like_creation, update_post_like_count
+import time
 
 
 
@@ -143,9 +144,13 @@ def likeCount(request):
     data = json.loads(request.body)
     postID = data.get("postId", "")
     postExist = Post.objects.get(id=postID)
+    time.sleep(.5)
+    postLikeCount = PostLike.objects.filter(post=postExist, currentLike=True).count()
+    print(postLikeCount)
+    postExist.likeCount = postLikeCount  # Corrected the variable name
+    postExist.save()  # Save the updated object
+    return JsonResponse({"success": "post like count updated", "likeCount": postLikeCount})
 
-    update_post_like_count(postExist)
-    return JsonResponse({"success": "post like count updated"})
 
 def index(request):
 
