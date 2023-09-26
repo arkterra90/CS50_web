@@ -40,7 +40,7 @@ function like(event) {
             }
         });
  
-        console.log(postStatus)
+        
         fetch('/likeCount', {
             method: 'POST',
             body: JSON.stringify({

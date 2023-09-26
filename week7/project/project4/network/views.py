@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.core.paginator import Paginator
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
-from .utils import handle_post_like_creation, update_post_like_count
+from .utils import handle_post_like_creation
 import time
 
 

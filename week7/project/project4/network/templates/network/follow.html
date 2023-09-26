@@ -31,11 +31,11 @@
                 Like 
             {% endif %}
         </button>
-        <p>Post Likes: {% if post.likeCount == None %}
-                            0
-                        {% else %}
-                            {{ post.likeCount }}
-                        {% endif %}</p>
+        <p id="postLikeCount-{{ post.id }}">Post Likes: {% if post.likeCount == None %}
+            0
+        {% else %}
+            {{ post.likeCount }}
+        {% endif %}</p>
     </div>
     {% endfor %}
 
