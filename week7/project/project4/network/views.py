@@ -18,6 +18,15 @@ from .models import *
 from django.http import JsonResponse
 
 @login_required
+@csrf_exempt
+def editPost(request):
+
+    if request.method != "POST":
+        return JsonResponse({"error": "POST request required"})
+    
+    
+
+@login_required
 def follow_page(request):
 
     user = request.user
@@ -135,6 +144,8 @@ def like(request):
 
     # Moved outside the if-else blocks
     
+# Takes AJAX call and updates the like count of a post. Then returns response update with a like
+# count to update the post like count.
 @login_required
 @csrf_exempt 
 def likeCount(request):

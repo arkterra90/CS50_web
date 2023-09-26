@@ -22,15 +22,29 @@
 </div>
 
 
-<div name="userPost">
+<div name="userPostDisplay">
 
     {% for post in page_obj %}
-    <div id="postPage" class="border border-dark p-4 rounded shadow-sm" style="width: 80%; margin: 10px auto; background-color: #f0f0f0; padding: 10px;">
-        <p>{{ post.text }}</p>
-        <p>User: {{ post.user.username }}</p>
-        <p>Created On: {{ post.timeStamp }}</p>
-    </div>
+    <div id="post-{{ post.id }}" class="border border-dark p-4 rounded shadow-sm" style="width: 80%; margin: 10px auto; background-color: #f0f0f0; padding: 10px;">
+        <div class="userPost" style="display: inline-block;">
+            <p id="post-text-{{ post.id }}">{{ post.text }}</p>
+            <p>User: {{ post.user.username }}</p>
+            <p>Created On: {{ post.timeStamp }}</p>
+            {% if user.is_authenticated and user.id == post.user.id %}
+                <button class="edit-button" data-post-id="{{ post.id }}">Edit</button>
+            {% endif %}
+        </div>  
+
+        <div class="editPost" style="display: none;">
+            <p id="user">User: {{ post.user.username }}</p>
+            <p id="createdOn">Created On: {{ post.timeStamp }}</p>
+            <textarea rows="4" cols="50">{{ post.text }}</textarea>
+            <button class="save-button" data-post-id="{{ post.id }}">Save</button>
+        </div>
+
+    </div> 
     {% endfor %}
+
 
     <nav aria-label="Page navigation">
         <ul class="pagination justify-content-center">
@@ -71,6 +85,6 @@
 {% endblock %}
 
 {% block script %}
-<script src="{% static 'network/network.js' %}"></script>
+<script src="{% static 'network/edit.js' %}"></script>
 
 {% endblock %}

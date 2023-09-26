@@ -40,7 +40,8 @@ function like(event) {
             }
         });
  
-        
+        // Send AJAX call to likeCount to update the post like count
+        // and then update the like count on UI.
         fetch('/likeCount', {
             method: 'POST',
             body: JSON.stringify({
@@ -51,7 +52,7 @@ function like(event) {
             .then(result => {
                 console.log(result);
         
-                // Update the post like count in the HTML element
+                // Updates the post like count in the HTML element
                 const postLikeCountElement = document.querySelector(`#postLikeCount-${postId}`);
                 if (postLikeCountElement) {
                     postLikeCountElement.textContent = result.likeCount;
