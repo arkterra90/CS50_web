@@ -1,9 +1,12 @@
+<!--Index page of the website to allow a logged in user to create a post,
+like other user post, and present users post in a paginated format.-->
+
 {% extends "network/layout.html" %}
 {% load static %}
 
 {% block body %}
 
-    <div id="newPost" class="border border-dark p-4 rounded shadow-sm" style="width: 80%; margin: 0 auto; background-color: #f0f0f0;">
+    <div id="newPost" class="border border-dark p-4 rounded shadow-sm" style="width: 80%; margin: 10px auto; background-color: #f0f0f0;">
         <form method="post" action="{% url 'post' %}">
             {% csrf_token %}
             <h2 class="mb-4">New Post</h2>
@@ -27,7 +30,7 @@
                 Like 
             {% endif %}
         </button>
-        <p id="postLikeCount-{{ post.id }}">Post Likes: {% if post.likeCount == None %}
+        <p id="postLikeCount-{{ post.id }}" style="margin-top: 10px;">Post Likes: {% if post.likeCount == None %}
             0
         {% else %}
             {{ post.likeCount }}
@@ -84,6 +87,7 @@
    
 {% endblock %}
 
+<!--Javascript to allow user to like post.-->
 {% block script %}
 <script src="{% static 'network/like.js' %}"></script>
 {% endblock %}

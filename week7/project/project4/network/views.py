@@ -17,6 +17,10 @@ from .models import *
 
 from django.http import JsonResponse
 
+# editPost takes an AJAX call and updates Post model to reflect
+# new input from the logged in user. Users and prevented from
+# editing other users post by verifying the user editing the post is the same
+# as the one who created the post and is the currently logged in user.
 @login_required
 @csrf_exempt
 def editPost(request):
@@ -42,14 +46,13 @@ def editPost(request):
     return JsonResponse({"success": "postText Recieved"})
     
 
-
+# follow_page displays only the post from users the logged in user is currently following.
 @login_required
 def follow_page(request):
 
     user = request.user
     userFollows = Follower.objects.filter(user=user)
     userFollowList = []
-    # userFollowPost = Post.objects.filter(user=userFollows.userfollow).order_by('-timestamp')
     for follwerId in userFollows:
         userFollowId = follwerId.userfollow
         userFollowList.append(userFollowId)
@@ -68,8 +71,6 @@ def follow_page(request):
             likeId = likes.post
             userLikesPostId.append(likeId)
 
-    # Need to make query to postlike model to count how many likes are available
-    # for each post and send as a dictionary.
     
     return render(request, "network/follow.html", {
         "allPost": allPost,
@@ -77,8 +78,6 @@ def follow_page(request):
         "has_previous_page": has_previous_page,
         "userLikes": userLikesPostId
     })
-
-    print(followedUserPost)
     
     return render(request, "network/follow.html")
 
@@ -125,6 +124,8 @@ def follow(request):
         else:
             return JsonResponse({"error": "Not a follower"})
 
+# Takes AJAX call from like.js and creates or updates a record in the model
+# to reflect the current state of if the user is following the user or not.
 @login_required
 @csrf_exempt
 def like(request):
@@ -179,7 +180,7 @@ def likeCount(request):
     postExist.save()  # Save the updated object
     return JsonResponse({"success": "post like count updated", "likeCount": postLikeCount})
 
-
+# Renders index page for logged in user.
 def index(request):
 
     # Query to get all post and paginate the post
@@ -195,10 +196,6 @@ def index(request):
     for likes in userLikes:
             likeId = likes.post
             userLikesPostId.append(likeId)
-
-
-    # Need to make query to postlike model to count how many likes are available
-    # for each post and send as a dictionary.
     
     return render(request, "network/index.html", {
         "allPost": allPost,
@@ -273,6 +270,7 @@ def register(request):
     else:
         return render(request, "network/register.html")
 
+# Renders either a user profile or the profile of a user the logged in user desires to view.
 def user(request, user_id):
 
     #Gets all needed info for profile page

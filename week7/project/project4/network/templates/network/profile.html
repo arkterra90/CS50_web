@@ -1,3 +1,6 @@
+<!--Logged in user profile page. Includes the ability to edit post and save. Does
+not include the follow button.-->
+
 {% extends "network/layout.html" %}
 {% load static %}
 
@@ -5,20 +8,9 @@
 
 <div name="userProfileHead" style="margin: 20px;"> 
     <h5>User Profile:</h5>
-    <p>{{ user_info.username }}</p>
+    <p>User: {{ user_info.username }}</p>
     <p>Followers: {{ followers }}</p>
     <p>Following: {{ following }} </p>
-        <!-- <form id="followForm">
-        {% csrf_token %}
-        <input type="hidden" name="user_id" id="user_id" value="{{ user_info.id }}">
-        <button type="submit" name="follow" class="follow-button" id="followButton" data-user-id="{{ user_info.id }}">
-            {% if already_follow %}
-                Unfollow Me
-            {% else %}
-                Follow Me
-            {% endif %}
-        </button>
-    </form> -->
 </div>
 
 
@@ -84,7 +76,9 @@
 
 {% endblock %}
 
+<!--Java script for being able to edit the logged in user post. Send AJAX
+call to update with new content and displays the new post without loading
+the page again.-->
 {% block script %}
 <script src="{% static 'network/edit.js' %}"></script>
-
 {% endblock %}

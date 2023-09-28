@@ -1,3 +1,7 @@
+// Javascript allows user to follow and unfollow a user.
+// Also toggles follow button according to state of if the user
+// is currently following the user.
+
 document.addEventListener('DOMContentLoaded', function() {
 
     document.querySelector('#followButton').addEventListener('click', follow);

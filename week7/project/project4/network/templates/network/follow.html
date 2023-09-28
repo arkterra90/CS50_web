@@ -1,19 +1,10 @@
+<!--HTML page for the follow page for Network. Displays all post from followed
+users in a paginated format. Allows logged in user to like a post.-->
+
 {% extends "network/layout.html" %}
 {% load static %}
 
 {% block body %}
-
-    <!-- <div id="newPost" class="border border-dark p-4 rounded shadow-sm" style="width: 80%; margin: 0 auto; background-color: #f0f0f0;">
-        <form method="post" action="{% url 'post' %}">
-            {% csrf_token %}
-            <h2 class="mb-4">New Post</h2>
-            <div class="d-flex flex-column align-items-center">
-                <input id="newPostBox" class="form-control mb-2" type="text" name="newPostBox" placeholder="Write your post...">
-                <input type="hidden" name="network_user" value="{{ user.username }}">
-                <button type="submit" id="newPostSubmit" style="align-self: flex-start;" class="btn btn-primary">Submit Post</button>
-            </div>
-        </form>
-    </div> -->
 
     <div id="followPageHeader" style="margin: 40px;">
         <h2>Following</h2>
@@ -87,6 +78,7 @@
    
 {% endblock %}
 
+<!--Javascript to allow user to like a post.-->
 {% block script %}
 <script src="{% static 'network/like.js' %}"></script>
 {% endblock %}

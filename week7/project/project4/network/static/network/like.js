@@ -1,3 +1,7 @@
+// Javascript allows user to like and unlike a users post. 
+// Also toggles the like button based on the current state of if
+// the user input.
+
 document.addEventListener('DOMContentLoaded', function() {
     const likeButtons = document.querySelectorAll('.post-like-button');
 

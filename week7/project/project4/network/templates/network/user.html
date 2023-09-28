@@ -1,3 +1,6 @@
+<!--Displays other users on Network and allows logged in user to follow and unfollow
+the user displayed on the page.-->
+
 {% extends "network/layout.html" %}
 {% load static %}
 
@@ -5,14 +8,13 @@
 
 <div name="userProfileHead" style="margin: 20px;"> 
     <h5>User Profile:</h5>
-    <p>{{ user_info.username }}</p>
+    <p>User: {{ user_info.username }}</p>
     <p>Followers: {{ followers }} </p>
     <p>Following: {{ following }} </p>
         <form id="followForm">
-    <!-- <form method="post" action="{% url 'follow' user_info.id %}"> -->
         {% csrf_token %}
         <input type="hidden" name="user_id" id="user_id" value="{{ user_info.id }}">
-        <button type="submit" name="follow" id="followButton" data-user-id="{{ user_info.id }}">
+        <button type="submit" name="follow" id="followButton" data-user-id="{{ user_info.id }}" class="btn btn-primary btn-sm">
             {% if already_follow %}
                 Unfollow Me
             {% else %}
