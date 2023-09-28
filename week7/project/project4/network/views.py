@@ -282,8 +282,8 @@ def user(request, user_id):
     userPost = Post.objects.filter(user = user_info).order_by('-timeStamp')
 
     # Follower and following counts
-    followers = Follower.objects.filter(userfollow=user_id).count()
-    following = Follower.objects.filter(user=user_info).count()
+    followers = Follower.objects.filter(userfollow=user_id, currentFollow=True).count()
+    following = Follower.objects.filter(user=user_info, currentFollow=True).count()
     print(followers, following)
 
 
