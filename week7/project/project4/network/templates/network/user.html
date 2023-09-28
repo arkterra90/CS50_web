@@ -6,8 +6,8 @@
 <div name="userProfileHead" style="margin: 20px;"> 
     <h5>User Profile:</h5>
     <p>{{ user_info.username }}</p>
-    <p>Followers: </p>
-    <p>Following: </p>
+    <p>Followers: {{ followers }} </p>
+    <p>Following: {{ following }} </p>
         <form id="followForm">
     <!-- <form method="post" action="{% url 'follow' user_info.id %}"> -->
         {% csrf_token %}

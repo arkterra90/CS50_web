@@ -43,7 +43,7 @@ class Follower(models.Model):
 
     #The user following
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    #The user beinng followed
+    #The user being followed
     userfollow = models.IntegerField()
     dateFollowed = models.DateTimeField(auto_now_add=True)
     currentFollow = models.BooleanField()

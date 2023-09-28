@@ -24,7 +24,24 @@ def editPost(request):
     if request.method != "POST":
         return JsonResponse({"error": "POST request required"})
     
+    data = json.loads(request.body)
+
+    postId = data.get("postId", "")
+    postText = data.get("postText", "")
+    loggedInUser = request.user
+    userPost = Post.objects.get(id=postId)
+
+    # Verifies user editing post is the post creator.
+    if loggedInUser != userPost.user:
+        return JsonResponse({"error": "Only post creator can edit post"})
     
+    if loggedInUser == userPost.user:
+        userPost.text = postText
+        userPost.save()
+
+    return JsonResponse({"success": "postText Recieved"})
+    
+
 
 @login_required
 def follow_page(request):
@@ -97,7 +114,7 @@ def follow(request):
         except IntegrityError:
             return JsonResponse({"error": "Could not create user follow record"})
         
-    # If the user current follows the profile and clicks to unfollow the profile
+    # If the user currently follows the profile and clicks to unfollow the profile
     # the Follower model is changed to reflect the users desire to unfollow the profile.
     else:
         if already_follow.exists():
@@ -264,7 +281,13 @@ def user(request, user_id):
     # Gets all post made by active user
     userPost = Post.objects.filter(user = user_info).order_by('-timeStamp')
 
-    already_follow = Follower.objects.filter(user=request.user, userfollow=user_id).exists()
+    # Follower and following counts
+    followers = Follower.objects.filter(userfollow=user_id).count()
+    following = Follower.objects.filter(user=user_info).count()
+    print(followers, following)
+
+
+    already_follow = Follower.objects.filter(user=request.user, userfollow=user_id, currentFollow = True).exists()
 
 
     paginator = Paginator(userPost, 10)
@@ -273,13 +296,15 @@ def user(request, user_id):
     has_previous_page = page_obj.has_previous
 
     logInId = request.user.id
-    print(logInId)
+    
     if user_id == request.user.id:
         return render(request, "network/profile.html",{
             "page_obj": page_obj,
             "user_info": user_info,
             "has_previous_page": has_previous_page,
-            "already_follow": already_follow
+            "already_follow": already_follow,
+            "followers": followers,
+            "following": following
         })
     
     else:
@@ -288,5 +313,7 @@ def user(request, user_id):
             "page_obj": page_obj,
             "user_info": user_info,
             "has_previous_page": has_previous_page,
-            "already_follow": already_follow
+            "already_follow": already_follow,
+            "followers": followers,
+            "following": following
         })

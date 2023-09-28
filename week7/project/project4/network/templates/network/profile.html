@@ -6,8 +6,8 @@
 <div name="userProfileHead" style="margin: 20px;"> 
     <h5>User Profile:</h5>
     <p>{{ user_info.username }}</p>
-    <p>Followers: </p>
-    <p>Following: </p>
+    <p>Followers: {{ followers }}</p>
+    <p>Following: {{ following }} </p>
         <!-- <form id="followForm">
         {% csrf_token %}
         <input type="hidden" name="user_id" id="user_id" value="{{ user_info.id }}">
@@ -38,7 +38,7 @@
         <div class="editPost" style="display: none;">
             <p id="user">User: {{ post.user.username }}</p>
             <p id="createdOn">Created On: {{ post.timeStamp }}</p>
-            <textarea rows="4" cols="50">{{ post.text }}</textarea>
+            <textarea id="postTextArea-{{ post.id }}" rows="4" cols="50">{{ post.text }}</textarea>
             <button class="save-button" data-post-id="{{ post.id }}">Save</button>
         </div>
 
