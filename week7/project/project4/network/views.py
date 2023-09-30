@@ -51,7 +51,7 @@ def editPost(request):
 def follow_page(request):
 
     user = request.user
-    userFollows = Follower.objects.filter(user=user)
+    userFollows = Follower.objects.filter(user=user, currentFollow=True)
     userFollowList = []
     for follwerId in userFollows:
         userFollowId = follwerId.userfollow

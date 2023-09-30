@@ -59,7 +59,8 @@ function like(event) {
                 // Updates the post like count in the HTML element
                 const postLikeCountElement = document.querySelector(`#postLikeCount-${postId}`);
                 if (postLikeCountElement) {
-                    postLikeCountElement.textContent = result.likeCount;
+                    postLikeCountElement.textContent = `Post Likes: ${result.likeCount}`;
                 }
+
             });
 }

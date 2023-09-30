@@ -5,7 +5,7 @@ like other user post, and present users post in a paginated format.-->
 {% load static %}
 
 {% block body %}
-
+    {% if  user.is_authenticated %}
     <div id="newPost" class="border border-dark p-4 rounded shadow-sm" style="width: 80%; margin: 10px auto; background-color: #f0f0f0;">
         <form method="post" action="{% url 'post' %}">
             {% csrf_token %}
@@ -17,6 +17,7 @@ like other user post, and present users post in a paginated format.-->
             </div>
         </form>
     </div>
+    {% endif %}
 
     {% for post in page_obj %}
     <div id="postPage" class="border border-dark p-4 rounded shadow-sm" style="width: 80%; margin: 10px auto; background-color: #f0f0f0; padding: 10px;">
